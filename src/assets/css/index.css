@@ -1,0 +1,52 @@
+@import url(https://fonts.googleapis.com/css2?family=Belgrano&display=swap);
+
+* {
+  font-family: 'Belgrano, sans-serif';
+  margin: 0;
+  padding: 0;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row {
+  overflow: hidden;
+}
+
+/* Login */
+.auth .active {
+  font-weight: bold;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+.auth .col {
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.loginbtn {
+  text-align: center;
+  font-size: 1.1rem;
+  width: 7rem;
+}
+
+/* Common */
+@import url(./common.css);
+
+/* Home */
+@import url(./home.css);
+
+/* Products */
+@import url(./products.css);
+
+/* Catalog */
+@import url(./catalog.css);
+
+/* Profile */
+@import url(./profile.css);
+
+/* Wishlist */
+@import url(./wishlist.css);

@@ -1,0 +1,73 @@
+/* //wishlist  */
+.wishlist-card {
+  position: relative;
+  overflow: hidden;
+  border: none;
+}
+
+.wishlist-card .actions {
+  position: absolute;
+  top: 10px;
+  justify-content: space-between;
+  display: flex;
+  z-index: 1;
+  width: 100%;
+}
+
+.wishlist-card .actions .icon {
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+}
+
+.wishlist-card .image-container {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #000;
+}
+
+.wishlist-card .add-to-cart {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(207, 190, 190, 0.5);
+  color: #000;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.wishlist-card .image-container:hover .add-to-cart {
+  opacity: 1;
+}
+
+.wishlist-card .info {
+  padding: 8px;
+}
+
+/* Ratings and review section  */
+.review-head {
+  justify-content: space-between;
+  width: 100%;
+  display: flex;
+}
+.reviews p {
+  margin: 5px;
+}
+.review-body .column {
+  background-color: lightgrey;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .review-body .column {
+    height: auto;
+  }
+}
