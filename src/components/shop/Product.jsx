@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FaCircle, FaRegHeart, FaHeart } from "react-icons/fa";
 import axios from "axios";
 import tssurl from "../../port";
+import { toast } from "react-toastify";
 
 const Product = ({ product }) => {
   const [likedProducts, setLikedProducts] = useState([]);
@@ -18,8 +19,8 @@ const Product = ({ product }) => {
 
   const fetchLikedProducts = async () => {
     try {
-      const response = await axios.get(`${tssurl}/liked/liked-products/${MID}`); // Replace 'backend_url_here' with the actual backend URL to fetch liked product IDs
-      setLikedProducts(response.data.likedProducts); // Assuming the backend returns an array of liked product IDs
+      const response = await axios.get(`${tssurl}/liked/liked-products/${MID}`);
+      setLikedProducts(response.data.likedProducts);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching liked products:", error);
@@ -37,6 +38,7 @@ const Product = ({ product }) => {
         await axios.delete(`${tssurl}/liked/liked-products/delete`, {
           data: { mid: MID, pid: product.pid },
         });
+        toast.success("Removed from Wishlist");
       } else {
         // Like the product
         setLikedProducts([...likedProducts, product.pid]);
