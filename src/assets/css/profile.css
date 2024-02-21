@@ -193,3 +193,20 @@ select:focus {
 .update-button:hover {
   background-color: black;
 }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.card-button {
+  color: grey;
+  padding: 5px 15px;
+  border: 1px solid grey;
+  background: white;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: auto; /* Center button vertically */
+  margin-bottom: 25px;
+}

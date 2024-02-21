@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import { BsChevronRight } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,Link} from 'react-router-dom';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -18,20 +18,25 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('MID');
     setIsLoggedIn(false);
     navigate('/');
   };
 
   return (
     <ListGroup className="sidebar">
+      <Link to="/profile" className="sidebar-link text-decoration-none">
       <ListGroupItem className="sidebar-item">
         Profile
         <BsChevronRight />
       </ListGroupItem>
+    </Link>
+  <Link to="/changepassword" className="sidebar-link text-decoration-none">
       <ListGroupItem className="sidebar-item">
         Change Password
         <BsChevronRight />
       </ListGroupItem>
+    </Link>
       <ListGroupItem className="sidebar-item">
         Orders
         <BsChevronRight />
