@@ -7,12 +7,14 @@ import Ratings from '../components/common/Ratings';
 import Reviews from '../components/shop/Reviews';
 import axios from 'axios';
 import tssurl from '../port';
+import ProductsSlider from '../components/shop/ProductSlider';
 
 const ProductDetailsPage = () => {
   const { pid: productId } = useParams();
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -26,9 +28,15 @@ const ProductDetailsPage = () => {
       } finally {
         setLoading(false);
       }
+      try {
+        const response = await axios.get(`${tssurl}/productcat/products`);
+        setProducts(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
     fetchProduct();
-  }, [productId]);
+  }, [productId,product]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -155,6 +163,10 @@ const ProductDetailsPage = () => {
           </Tabs>
         </Col>
       </Row>
+      <div className='mt-5'>
+      <ProductsSlider data={products}/> 
+
+      </div>
       <div className="py-4">
         <Reviews />
       </div>

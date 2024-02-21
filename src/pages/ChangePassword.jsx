@@ -3,9 +3,12 @@ import { Row, Col, Container } from 'react-bootstrap';
 import Sidebar from '../components/profile/Sidebar';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import tssurl from '../port';
+import { toast } from 'react-toastify';
+import ShopTags from '../components/common/Tags';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ChangePassword = () => {
+  // State variables to manage password input fields and their visibility
   const [passwords, setPasswords] = useState({
     oldPassword: '',
     newPassword: '',
@@ -15,6 +18,7 @@ const ChangePassword = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // Function to handle changes in password input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPasswords({
@@ -23,6 +27,7 @@ const ChangePassword = () => {
     });
   };
 
+  // Functions to toggle the visibility of password input fields
   const togglePasswordVisibility = (type) => {
     switch (type) {
       case 'oldPassword':
@@ -39,31 +44,37 @@ const ChangePassword = () => {
     }
   };
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    // Retrieve the authorization token from local storage
     const authToken = localStorage.getItem('authToken');
-    console.log('authToeken', authToken);
-
+    const mid=localStorage.getItem('mID');
+    console.log('authToeken', authToken)
+  
+    // Check if passwords match
     if (passwords.newPassword === passwords.confirmPassword) {
       try {
         const response = await fetch(`${tssurl}/auth/change-password`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`,
+            'Authorization': `Bearer ${authToken}` // Pass the authorization token with Bearer scheme
           },
           body: JSON.stringify({
             oldPassword: passwords.oldPassword,
             newPassword: passwords.newPassword,
             confirmPassword: passwords.confirmPassword,
-            mid: 'your_mid_value',
-          }),
+            mid: mid // Replace 'your_mid_value' with the actual mid value
+          })
         });
-        console.log('response', response);
+          console.log("response",response);
         if (response.ok) {
+          // Password changed successfully
           console.log('Password changed successfully');
         } else {
+          // Handle error response
           console.error('Failed to change password');
         }
       } catch (error) {
@@ -72,23 +83,31 @@ const ChangePassword = () => {
     } else {
       alert('Passwords do not match');
     }
-
+  
+    // Reset form after submission
     setPasswords({
       oldPassword: '',
       newPassword: '',
       confirmPassword: '',
     });
   };
+  
+  
+  
 
   return (
     <div>
-      <Container>
+      <Container fluid>
+      <Row>
+          <ShopTags />
+        </Row>
+        <p className="mx-5 my-3 fw-bold fs-4">My Account</p>
         <Row>
           <Col md={3}>
             <Sidebar />
           </Col>
           <Col md={9} className="narrow-form-container">
-            <form onSubmit={handleSubmit} className="narrow-form-container">
+            <form onSubmit={handleSubmit} className="narrow-form-container" style={{marginRight:'100px'}}>
               <div className="form-group password-input">
                 <label htmlFor="oldPassword">Old Password:</label>
                 <input

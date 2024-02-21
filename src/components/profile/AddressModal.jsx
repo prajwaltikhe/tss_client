@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const AddressModal = ({ showModal, handleCloseModal, handleAdd }) => {
-  const [address, setAddress] = useState('');
-  const [zipcode, setZipcode] = useState('');
+const AddAddressModal = ({ showModal, handleCloseModal, handleAdd ,updateAddress}) => {
   const [country, setCountry] = useState('');
+  const [landmark, setLandmark] = useState('');
+  const [zipcode, setZipcode] = useState('');
+  const [phoneNo, setPhoneNo] = useState('');
 
   return (
     <Modal show={showModal} onHide={handleCloseModal} size="sm">
@@ -13,13 +14,24 @@ const AddressModal = ({ showModal, handleCloseModal, handleAdd }) => {
       </Modal.Header>
       <Modal.Body>
         <div className="form-group">
-          <label htmlFor="address">Address:</label>
+          <label htmlFor="landmark">Landmark:</label>
           <input
             type="text"
-            id="address"
-            name="address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            id="landmark"
+            name="landmark"
+            value={landmark}
+            onChange={(e) => setLandmark(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="country">Country:</label>
+          <input
+            type="text"
+            id="country"
+            name="country"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
             required
           />
         </div>
@@ -35,13 +47,13 @@ const AddressModal = ({ showModal, handleCloseModal, handleAdd }) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="country">Country:</label>
+          <label htmlFor="phoneNo">Phone No:</label>
           <input
             type="text"
-            id="country"
-            name="country"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
+            id="phoneNo"
+            name="phoneNo"
+            value={phoneNo}
+            onChange={(e) => setPhoneNo(e.target.value)}
             required
           />
         </div>
@@ -50,10 +62,7 @@ const AddressModal = ({ showModal, handleCloseModal, handleAdd }) => {
         <Button variant="secondary" onClick={handleCloseModal}>
           Close
         </Button>
-        <Button
-          variant="primary"
-          onClick={() => handleAdd({ address, zipcode, country })}
-        >
+        <Button variant="primary" onClick={() => handleAdd({ country, landmark, zipcode, phoneNo })}>
           Add
         </Button>
       </Modal.Footer>
@@ -61,4 +70,4 @@ const AddressModal = ({ showModal, handleCloseModal, handleAdd }) => {
   );
 };
 
-export default AddressModal;
+export default AddAddressModal;
