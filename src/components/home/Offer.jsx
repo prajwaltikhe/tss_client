@@ -1,4 +1,5 @@
 import { Container, Card, Row, Col, Image, Button } from 'react-bootstrap';
+import offer2 from '../../assets/images/offer2.png';
 
 const Offer = ({ data: { image, Title, Name, Offer, Subtitle } }) => {
   return (
@@ -22,8 +23,8 @@ const Offer = ({ data: { image, Title, Name, Offer, Subtitle } }) => {
             <small>*Terms and Conditions apply</small>
           </Card>
         </Col>
-        <Col md={4} className="text-end">
-          <Image src={image.url} fluid />
+        <Col md={4} className="text-end mt-auto">
+          <Image src={offer2} fluid />
         </Col>
       </Row>
     </Container>
