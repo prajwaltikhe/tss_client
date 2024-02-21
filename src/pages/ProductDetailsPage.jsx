@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Row, Col, Image } from 'react-bootstrap';
 import { Button, Form, Tabs, Tab } from 'react-bootstrap';
 import { FaCircle } from 'react-icons/fa';
@@ -28,6 +28,7 @@ const ProductDetailsPage = () => {
       } finally {
         setLoading(false);
       }
+
       try {
         const response = await axios.get(`${tssurl}/productcat/products`);
         setProducts(response.data);
@@ -35,15 +36,15 @@ const ProductDetailsPage = () => {
         console.error('Error fetching data:', error);
       }
     };
+
     fetchProduct();
-  }, [productId,product]);
+  }, [productId, product]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
   const { variants, colors, size, quantity_pi, product_detail } = product;
-
   const thumbImgUrl = variants?.[0]?.ThumbImg?.[0];
   const fitOptions = parseHtmlToList(product.fit);
   const fabricList = parseHtmlToList(product.fabric);
@@ -73,7 +74,7 @@ const ProductDetailsPage = () => {
             </Col>
           </Row>
           <h6 className="mt-2">
-            Color: {''}
+            Color:{' '}
             <span>
               {colors.map((color, index) => (
                 <FaCircle
@@ -163,9 +164,8 @@ const ProductDetailsPage = () => {
           </Tabs>
         </Col>
       </Row>
-      <div className='mt-5'>
-      <ProductsSlider data={products}/> 
-
+      <div className="mt-5">
+        <ProductsSlider data={products} />
       </div>
       <div className="py-4">
         <Reviews />

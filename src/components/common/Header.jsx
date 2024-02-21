@@ -13,14 +13,14 @@ const Header = ({ product }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
 
-  useEffect(() => {
-    setIsLoggedIn(isUserLoggedIn());
-  }, []);
-
   const isUserLoggedIn = () => {
     const authToken = localStorage.getItem('authToken');
     return authToken && authToken !== '';
   };
+
+  useEffect(() => {
+    setIsLoggedIn(isUserLoggedIn());
+  }, []);
 
   const fetchHeader = async () => {
     try {
@@ -48,15 +48,14 @@ const Header = ({ product }) => {
               <FaSearch size={15} />
             </Nav.Link>
             {isLoggedIn ? (
-        <Nav.Link href="/profile" className="px-3" >
-          <FaUser size={15} />
-        </Nav.Link>
-      ) : (
-        <Nav.Link className="px-3">
-              <Login data={show} handleShow={handleShow} />
-            </Nav.Link>
-      )}
-            
+              <Nav.Link href="/profile" className="px-3">
+                <FaUser size={15} />
+              </Nav.Link>
+            ) : (
+              <Nav.Link className="px-3">
+                <Login data={show} handleShow={handleShow} />
+              </Nav.Link>
+            )}
             <Nav.Link href="/wishlist" className="px-3">
               <FaStar size={15} />
             </Nav.Link>

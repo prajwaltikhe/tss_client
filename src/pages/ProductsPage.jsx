@@ -49,8 +49,8 @@ const ProductsPage = () => {
     setFilteredProducts(filtered);
   };
 
-  const handleSortChange = (option) => {
-    setSortOption(option);
+  const handleSortChange = ({ target: { value } }) => {
+    setSortOption(value);
   };
 
   useEffect(() => {
@@ -78,15 +78,12 @@ const ProductsPage = () => {
             </Col>
             <Col md={3} className="proselect">
               <span> Sort: </span>
-              <select
-                value={sortOption}
-                onChange={(e) => handleSortChange(e.target.value)}
-              >
-                <option value="Featured">Featured</option>
-                <option value="Name A to Z">Name A to Z</option>
-                <option value="Name Z to A">Name Z to A</option>
-                <option value="Price Low to High">Price Low to High</option>
-                <option value="Price High to Low">Price High to Low</option>
+              <select value={sortOption} onChange={handleSortChange}>
+                {Object.keys(sortFunctions).map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
               </select>
             </Col>
           </Row>

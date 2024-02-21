@@ -1,57 +1,56 @@
-import { useState, useEffect } from "react";
-import { Card, Badge } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { FaCircle, FaRegHeart, FaHeart } from "react-icons/fa";
-import axios from "axios";
-import tssurl from "../../port";
-import { toast } from "react-toastify";
+import { useState, useEffect, useCallback } from 'react';
+import { Card, Badge, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { FaCircle, FaRegHeart, FaHeart } from 'react-icons/fa';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import tssurl from '../../port';
 
 const Product = ({ product }) => {
   const [likedProducts, setLikedProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const thumbImgUrl = product.variants?.[0]?.ThumbImg?.[0];
   const colors = product.colors;
-  const MID = localStorage.getItem("MID");
+  const MID = localStorage.getItem('MID');
 
   useEffect(() => {
+    const fetchLikedProducts = async () => {
+      try {
+        const response = await axios.get(
+          `${tssurl}/liked/liked-products/${MID}`
+        );
+        setLikedProducts(response.data.likedProducts);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching liked products:', error);
+        setIsLoading(false);
+      }
+    };
+
     fetchLikedProducts();
-  }, []);
+  }, [MID]);
 
-  const fetchLikedProducts = async () => {
+  const toggleLike = useCallback(async () => {
     try {
-      const response = await axios.get(`${tssurl}/liked/liked-products/${MID}`);
-      setLikedProducts(response.data.likedProducts);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching liked products:", error);
-      setIsLoading(false);
-    }
-  };
-
-  const toggleLike = async () => {
-    try {
-      // Check if product is already liked
       if (likedProducts.includes(product.pid)) {
-        // Unlike the product
         setLikedProducts(likedProducts.filter((pid) => pid !== product.pid));
-        // Send DELETE request to remove the like
+        console.log('Liked Products:', likedProducts);
         await axios.delete(`${tssurl}/liked/liked-products/delete`, {
           data: { mid: MID, pid: product.pid },
         });
-        toast.success("Removed from Wishlist");
+        toast.success('Removed from Wishlist');
       } else {
-        // Like the product
         setLikedProducts([...likedProducts, product.pid]);
-        // Send PID and MID to backend via POST request
         await axios.post(`${tssurl}/liked/liked-products/add`, {
           mid: MID,
           pid: product.pid,
-        }); // Replace 'backend_url_here' with the actual backend URL to send the data
+        });
+        toast.success('Added to Wishlist');
       }
     } catch (error) {
-      console.error("Error toggling like:", error);
+      console.error('Error toggling like:', error);
     }
-  };
+  }, [likedProducts, product.pid, MID]);
 
   return (
     <Card className="product">
@@ -61,14 +60,15 @@ const Product = ({ product }) => {
             className="heart"
             size="20px"
             onClick={toggleLike}
-            style={{ color: "red" }}
+            style={{ color: 'red' }}
           />
         ) : (
           <FaRegHeart className="heart" size="20px" onClick={toggleLike} />
         )}
+
         <Link to={`/productDetails/${product.pid}`}>
           <Card.Img src={thumbImgUrl} variant="top" fluid />
-          {product.rating > "4.5" ? <Badge bg="light">TOP RATED</Badge> : ""}
+          {product.rating > '4.5' && <Badge bg="light">TOP RATED</Badge>}
         </Link>
       </div>
 

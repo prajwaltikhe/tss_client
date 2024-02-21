@@ -207,6 +207,6 @@ select:focus {
   background: white;
   border-radius: 50px;
   cursor: pointer;
-  margin-top: auto; /* Center button vertically */
+  margin-top: auto;
   margin-bottom: 25px;
 }

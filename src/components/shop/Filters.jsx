@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Form, ListGroup, Button } from 'react-bootstrap';
 import { FaCircle } from 'react-icons/fa';
 import Ratings from '../common/Ratings';

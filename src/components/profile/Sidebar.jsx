@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import { BsChevronRight } from 'react-icons/bs';
-import { useNavigate ,Link} from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -26,43 +26,43 @@ const Sidebar = () => {
   return (
     <ListGroup className="sidebar">
       <Link to="/profile" className="sidebar-link text-decoration-none">
-      <ListGroupItem className="sidebar-item">
-        Profile
-        <BsChevronRight />
-      </ListGroupItem>
-    </Link>
-  <Link to="/changepassword" className="sidebar-link text-decoration-none">
-      <ListGroupItem className="sidebar-item">
-        Change Password
-        <BsChevronRight />
-      </ListGroupItem>
-    </Link>
-      <ListGroupItem className="sidebar-item">
+        <ListGroup.Item className="sidebar-item">
+          Profile
+          <BsChevronRight />
+        </ListGroup.Item>
+      </Link>
+      <Link to="/changepassword" className="sidebar-link text-decoration-none">
+        <ListGroup.Item className="sidebar-item">
+          Change Password
+          <BsChevronRight />
+        </ListGroup.Item>
+      </Link>
+      <ListGroup.Item className="sidebar-item">
         Orders
         <BsChevronRight />
-      </ListGroupItem>
-      <ListGroupItem className="sidebar-item">
+      </ListGroup.Item>
+      <ListGroup.Item className="sidebar-item">
         Payment Option
         <BsChevronRight />
-      </ListGroupItem>
-      <ListGroupItem className="sidebar-item">
+      </ListGroup.Item>
+      <ListGroup.Item className="sidebar-item">
         Reward Points
         <BsChevronRight />
-      </ListGroupItem>
-      <ListGroupItem className="sidebar-item">
+      </ListGroup.Item>
+      <ListGroup.Item className="sidebar-item">
         Contact Us
         <BsChevronRight />
-      </ListGroupItem>
+      </ListGroup.Item>
       {isLoggedIn ? (
-        <ListGroupItem className="sidebar-item" onClick={handleLogout}>
+        <ListGroup.Item className="sidebar-item" onClick={handleLogout}>
           Log Out
           <BsChevronRight />
-        </ListGroupItem>
+        </ListGroup.Item>
       ) : (
-        <ListGroupItem className="sidebar-item">
+        <ListGroup.Item className="sidebar-item">
           Log In
           <BsChevronRight />
-        </ListGroupItem>
+        </ListGroup.Item>
       )}
     </ListGroup>
   );

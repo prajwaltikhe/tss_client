@@ -1,11 +1,8 @@
-import React from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { Container } from "react-bootstrap";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-
-
+import { Container, Row, Col, Card, Image } from 'react-bootstrap';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const ProductsSlider = ({ data }) => {
   var settings = {
@@ -43,25 +40,33 @@ const ProductsSlider = ({ data }) => {
         },
       },
     ],
-    prevArrow: <FaChevronLeft className="slick-prev custom-nav-button" />,
-    nextArrow: <FaChevronRight className="slick-next custom-nav-button" />,
+    prevArrow: <FaChevronLeft className="slick-prev" />,
+    nextArrow: <FaChevronRight className="slick-next" />,
   };
 
   return (
-    <div className="slider-container">
-      <Slider {...settings}>
-        {data.map((item, index) => (
-          <div key={index} className="card">
-            <img
-              src={item?.variants?.[0]?.ThumbImg}
-              alt={item?.sub_category}
-              className="card-image"
-            />
-            <h4 className="card-heading">{item?.sub_category}</h4>
-          </div>
-        ))}
-      </Slider>
-    </div>
+    <Container fluid>
+      <Row className="slider-container">
+        <Slider {...settings}>
+          {data.map((item, index) => (
+            <Col key={index} className="mb-4">
+              <Card>
+                <Image
+                  src={item?.variants?.[0]?.ThumbImg}
+                  alt={item?.sub_category}
+                  className="card-image"
+                />
+                <Card.Body>
+                  <Card.Title as="h4" className="card-heading">
+                    {item?.sub_category}
+                  </Card.Title>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Slider>
+      </Row>
+    </Container>
   );
 };
 

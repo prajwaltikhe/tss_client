@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { useState } from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
 
-const AddAddressModal = ({ showModal, handleCloseModal, handleAdd ,updateAddress}) => {
+const AddAddressModal = ({
+  showModal,
+  handleCloseModal,
+  handleAdd,
+  updateAddress,
+}) => {
   const [country, setCountry] = useState('');
   const [landmark, setLandmark] = useState('');
   const [zipcode, setZipcode] = useState('');
@@ -13,56 +18,56 @@ const AddAddressModal = ({ showModal, handleCloseModal, handleAdd ,updateAddress
         <Modal.Title>Add Address</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className="form-group">
-          <label htmlFor="landmark">Landmark:</label>
-          <input
-            type="text"
-            id="landmark"
-            name="landmark"
-            value={landmark}
-            onChange={(e) => setLandmark(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="country">Country:</label>
-          <input
-            type="text"
-            id="country"
-            name="country"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="zipcode">Zipcode:</label>
-          <input
-            type="text"
-            id="zipcode"
-            name="zipcode"
-            value={zipcode}
-            onChange={(e) => setZipcode(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="phoneNo">Phone No:</label>
-          <input
-            type="text"
-            id="phoneNo"
-            name="phoneNo"
-            value={phoneNo}
-            onChange={(e) => setPhoneNo(e.target.value)}
-            required
-          />
-        </div>
+        <Form>
+          <Form.Group controlId="formLandmark">
+            <Form.Label>Landmark:</Form.Label>
+            <Form.Control
+              type="text"
+              value={landmark}
+              onChange={(e) => setLandmark(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formCountry">
+            <Form.Label>Country:</Form.Label>
+            <Form.Control
+              type="text"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formZipcode">
+            <Form.Label>Zipcode:</Form.Label>
+            <Form.Control
+              type="text"
+              value={zipcode}
+              onChange={(e) => setZipcode(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formPhoneNo">
+            <Form.Label>Phone No:</Form.Label>
+            <Form.Control
+              type="text"
+              value={phoneNo}
+              onChange={(e) => setPhoneNo(e.target.value)}
+              required
+            />
+          </Form.Group>
+        </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleCloseModal}>
           Close
         </Button>
-        <Button variant="primary" onClick={() => handleAdd({ country, landmark, zipcode, phoneNo })}>
+        <Button
+          variant="primary"
+          onClick={() => handleAdd({ country, landmark, zipcode, phoneNo })}
+        >
           Add
         </Button>
       </Modal.Footer>

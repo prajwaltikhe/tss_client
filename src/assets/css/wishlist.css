@@ -1,4 +1,4 @@
-/* //wishlist  */
+/* Wishlist  */
 .wishlist-card {
   position: relative;
   border: none;
@@ -41,10 +41,10 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  transform: translate(0%,0%);
+  transform: translate(0%, 0%);
   background-color: rgba(255, 255, 255, 0.8);
   color: black;
-  padding: 8px ;
+  padding: 8px;
   text-align: center;
   font-weight: bold;
   font-size: 1.5rem;
@@ -58,19 +58,18 @@
 }
 
 .wishlist-card .product-title {
-
   font-size: 1.3rem;
   font-weight: bold;
   line-height: 1.2;
 }
 
-
 .wishlist-card .price {
   font-size: 1rem;
   color: #555;
 }
-.wishlist-card .product-title, .price {
-  text-decoration: none; /* Remove underlined effect */
+.wishlist-card .product-title,
+.price {
+  text-decoration: none;
 }
 
 /* Ratings and review section  */
