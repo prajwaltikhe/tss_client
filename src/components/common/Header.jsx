@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, Image, NavDropdown } from 'react-bootstrap';
-import { FaShoppingCart, FaStar, FaSearch } from 'react-icons/fa';
+import { FaShoppingCart, FaStar, FaSearch, FaUser } from 'react-icons/fa';
 import axios from 'axios';
 import tssurl from '../../port';
 import Login from '../auth/Login';
@@ -8,9 +8,19 @@ import Login from '../auth/Login';
 const Header = ({ product }) => {
   const [logo, setLogo] = useState('');
   const [head, setHead] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    setIsLoggedIn(isUserLoggedIn());
+  }, []);
+
+  const isUserLoggedIn = () => {
+    const authToken = localStorage.getItem('authToken');
+    return authToken && authToken !== '';
+  };
 
   const fetchHeader = async () => {
     try {
@@ -37,9 +47,16 @@ const Header = ({ product }) => {
             <Nav.Link href="/products" className="px-3">
               <FaSearch size={15} />
             </Nav.Link>
-            <Nav.Link className="px-3">
+            {isLoggedIn ? (
+        <Nav.Link href="/profile" className="px-3" >
+          <FaUser size={15} />
+        </Nav.Link>
+      ) : (
+        <Nav.Link className="px-3">
               <Login data={show} handleShow={handleShow} />
             </Nav.Link>
+      )}
+            
             <Nav.Link href="/wishlist" className="px-3">
               <FaStar size={15} />
             </Nav.Link>
