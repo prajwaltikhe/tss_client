@@ -1,5 +1,5 @@
 {
-  "name": "tss_frontend",
+  "name": "tss_client",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
