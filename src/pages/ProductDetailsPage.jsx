@@ -164,9 +164,11 @@ const ProductDetailsPage = () => {
           </Tabs>
         </Col>
       </Row>
+      <Row>
       <div className="mt-5">
         <ProductsSlider data={products} />
       </div>
+      </Row>
       <div className="py-4">
         <Reviews />
       </div>

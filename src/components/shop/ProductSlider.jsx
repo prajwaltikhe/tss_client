@@ -1,19 +1,39 @@
 import { Container, Row, Col, Card, Image } from 'react-bootstrap';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const ProductsSlider = ({ data }) => {
+  const CustomPrevButton = (props) => (
+    <button
+      {...props}
+      className="slick-arrow custom-prev-button"
+    >
+      <FaChevronLeft/>
+    </button>
+  );
+
+  
+  const CustomNextButton = (props) => (
+    <button
+      {...props}
+      className="slick-arrow custom-next-button"
+       >
+      <FaChevronRight/>
+    </button>
+  );
+
   var settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    initialSlide: 0,
+    slidesToShow: 4,
+    slidesToScroll: 4,
     autoplay: true,
-    autoplaySpeed: 1000,
+    initialSlide: 0,
+    prevArrow: <CustomPrevButton />, 
+    nextArrow: <CustomNextButton />, 
     responsive: [
       {
         breakpoint: 1024,
@@ -22,26 +42,24 @@ const ProductsSlider = ({ data }) => {
           slidesToScroll: 3,
           infinite: true,
           dots: true,
-        },
+        }
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2,
-        },
+          initialSlide: 2
+        }
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-        },
-      },
-    ],
-    prevArrow: <FaChevronLeft className="slick-prev" />,
-    nextArrow: <FaChevronRight className="slick-next" />,
+        }
+      }
+    ]
   };
 
   return (
