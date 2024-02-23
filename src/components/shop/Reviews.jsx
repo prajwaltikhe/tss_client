@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import { FaRegCircle } from 'react-icons/fa';
+import { FaRegCheckCircle } from 'react-icons/fa';
 import Ratings from '../common/Ratings';
 import axios from 'axios';
 import tssurl from '../../port';
@@ -43,7 +43,7 @@ const Reviews = ({ productID }) => {
           <Col md={4} sm={6} className="column column-recommendations">
             <div className=" row1"> 92 % Recommended</div>
             <div className=" row2">
-              <FaRegCircle size={30} />
+              <FaRegCheckCircle size={30} />
             </div>
           </Col>
           <Col md={4} className="column column-size">

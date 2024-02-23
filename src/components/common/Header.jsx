@@ -5,7 +5,7 @@ import axios from 'axios';
 import tssurl from '../../port';
 import Login from '../auth/Login';
 
-const Header = ({ product }) => {
+const Header = () => {
   const [logo, setLogo] = useState('');
   const [head, setHead] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,7 +19,7 @@ const Header = ({ product }) => {
   };
 
   useEffect(() => {
-    setIsLoggedIn(isUserLoggedIn());
+    setIsLoggedIn(isUserLoggedIn(true));
   }, []);
 
   const fetchHeader = async () => {
@@ -59,7 +59,7 @@ const Header = ({ product }) => {
             <Nav.Link href="/wishlist" className="px-3">
               <FaStar size={15} />
             </Nav.Link>
-            <Nav.Link href="/cart" className="px-3">
+            <Nav.Link href="/cart/carts" className="px-3">
               <FaShoppingCart size={15} />
             </Nav.Link>
           </Nav>

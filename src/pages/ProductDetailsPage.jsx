@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Container, Row, Col, Image } from 'react-bootstrap';
 import { Button, Form, Tabs, Tab } from 'react-bootstrap';
 import { FaCircle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import { useParams, Link } from 'react-router-dom';
 import Ratings from '../components/common/Ratings';
 import Reviews from '../components/shop/Reviews';
@@ -15,6 +16,8 @@ const ProductDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -52,6 +55,13 @@ const ProductDetailsPage = () => {
 
   const handleQtyChange = (e) => {
     setQty(parseInt(e.target.value, 10));
+  };
+
+  const addToCartHandler = () => {
+    const updatedCart = [...cart, { ...product, qty }];
+    setCart(updatedCart);
+
+    navigate('/cart/carts');
   };
 
   return (
@@ -126,6 +136,7 @@ const ProductDetailsPage = () => {
                 className="btn-block p-2 w-100"
                 type="button"
                 disabled={quantity_pi === 0}
+                onClick={addToCartHandler}
               >
                 Add to Cart
               </Button>
