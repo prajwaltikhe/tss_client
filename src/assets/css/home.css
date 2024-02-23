@@ -68,6 +68,8 @@
   width: 75%;
 }
 .off-card p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   padding: 0.5rem;
 }
 .off-card .btn {
@@ -105,6 +107,10 @@
   font-size: 2.25rem;
   color: white;
   width: 25rem;
+}
+.collect2 p:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
 }
 
 /* Best Sellers */
@@ -170,13 +176,32 @@
   margin: 2rem 0;
   font-weight: 600;
 }
-.grid img {
-  width: 100%;
-  height: 30rem;
-}
 .grid .col-md-5,
 .grid .col-md-7 {
   padding: 0;
+}
+.grid img {
+  width: 100%;
+  height: 30rem;
+  position: relative;
+  z-index: 0;
+}
+
+.grid a .gtitle {
+  position: absolute;
+  text-align: start;
+  margin-left: 2rem;
+  transform: translateY(-160%);
+  z-index: 1;
+  font-size: 1.25rem;
+  color: white;
+  width: 25rem;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+.grid .gtitle:hover {
+  text-underline-offset: 0.5rem;
 }
 
 /* NewsLetter */

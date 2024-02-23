@@ -1,18 +1,18 @@
-import { useState} from "react";
-import { Button, Form, Row, Col, Modal } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { FaUser } from "react-icons/fa";
-import axios from "axios";
-import tssurl from "../../port";
-import Google_sigin from "./Google_sigin";
-import Register from "./Register";
+import { useState } from 'react';
+import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { FaUser } from 'react-icons/fa';
+import axios from 'axios';
+import tssurl from '../../port';
+import GoogleAuth from './GoogleAuth';
+import Register from './Register';
 
 const Login = ({ data }) => {
   const [show, setShow] = useState(data);
-  const [authMode, setAuthMode] = useState("signin");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [authMode, setAuthMode] = useState('signin');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [forgetPasswordModal, setForgetPasswordModal] = useState(false);
   const navigate = useNavigate();
 
@@ -37,8 +37,8 @@ const Login = ({ data }) => {
       toast.success(res.data.message);
       handleForgetPasswordModalClose();
     } catch (error) {
-      console.error("Error sending email:", error);
-      toast.error("Failed to send email");
+      console.error('Error sending email:', error);
+      toast.error('Failed to send email');
     }
   };
 
@@ -46,7 +46,7 @@ const Login = ({ data }) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
-      toast.error("Invalid email format");
+      toast.error('Invalid email format');
       return;
     }
 
@@ -59,39 +59,39 @@ const Login = ({ data }) => {
       const authToken = response?.data?.authToken;
       const mID = response?.data?.mid;
 
-      if (response.status === 200 && authMode === "signin") {
-        setEmail("");
-        setPassword("");
-        toast.success("Login Successful");
-        localStorage.setItem("authToken", authToken);
-        localStorage.setItem("MID", mID);
-        navigate("/");
+      if (response.status === 200 && authMode === 'signin') {
+        setEmail('');
+        setPassword('');
+        toast.success('Login Successful');
+        localStorage.setItem('authToken', authToken);
+        localStorage.setItem('MID', mID);
+        navigate('/');
       } else {
-        toast.error("Operation Unsuccessful", response.data.message);
+        toast.error('Operation Unsuccessful', response.data.message);
       }
       handleClose();
     } catch (error) {
-      toast.error(error.response?.data?.message || "Error occurred");
+      toast.error(error.response?.data?.message || 'Error occurred');
     }
   };
 
   return (
     <>
-      <FaUser size={15} style={{ cursor: "pointer" }} onClick={handleShow} />
+      <FaUser size={15} style={{ cursor: 'pointer' }} onClick={handleShow} />
 
       <Modal size="md" show={show} onHide={handleClose} centered>
         <Modal.Header closeButton className="auth">
           <Modal.Title>
             <Row>
               <Col
-                onClick={() => setAuthMode("signin")}
-                className={authMode === "signin" ? "active" : ""}
+                onClick={() => setAuthMode('signin')}
+                className={authMode === 'signin' ? 'active' : ''}
               >
                 Login
               </Col>
               <Col
-                onClick={() => setAuthMode("signup")}
-                className={authMode === "signup" ? "active" : ""}
+                onClick={() => setAuthMode('signup')}
+                className={authMode === 'signup' ? 'active' : ''}
               >
                 Register
               </Col>
@@ -99,9 +99,9 @@ const Login = ({ data }) => {
           </Modal.Title>
         </Modal.Header>
         <div>
-          <Google_sigin authMode={authMode} />
+          <GoogleAuth authMode={authMode} />
         </div>
-        {authMode === "signin" ? (
+        {authMode === 'signin' ? (
           <>
             <Modal.Body className="pb-0 mb-0">
               <Form onSubmit={handleSubmit}>
@@ -128,7 +128,7 @@ const Login = ({ data }) => {
                 </Form.Group>
                 <p className="text-center mt-2">
                   <Form.Text
-                    style={{ cursor: "pointer", fontWeight: "700" }}
+                    style={{ cursor: 'pointer', fontWeight: '700' }}
                     onClick={handleForgetPasswordModalShow}
                   >
                     Forgot Password?
