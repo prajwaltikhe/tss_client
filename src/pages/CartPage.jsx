@@ -30,7 +30,12 @@ const CartPage = () => {
           <Card className="bg-light">
             <Row>
               <Col md="3">
-                <Image src={offer2} alt="cart" fluid className="bg-white" />
+                <Image
+                  src={offer2}
+                  alt="cart"
+                  fluid
+                  className="bg-white h-100"
+                />
               </Col>
               <Col md="9">
                 <Row className="my-2 mt-3">
