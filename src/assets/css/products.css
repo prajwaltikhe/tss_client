@@ -73,14 +73,16 @@
 }
 
 /* Product Slider */
-.slider-container {
-  padding: 0;
+.main-slide {
+  position: relative;
+  padding: 1;
+  
 }
 .slick-slide {
   padding: 0.5rem;
 }
 
-.slider-container .card {
+.main-slide .card {
   width: 100%;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -88,17 +90,71 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.slider-container .card .card-image {
+.main-slide .card .card-image {
   width: 100%;
   height: 20rem;
   object-fit: cover;
 }
 
-.slider-container .card .card-heading {
+.main-slide .card .card-heading {
   text-align: center;
   margin-top: 10px;
 }
 
+.custom-prev-arrow,
+.custom-next-arrow {
+  position: absolute;
+  top: 50%; 
+  transform: translateY(-50%); 
+  z-index: 1;
+}
+
+.custom-prev-arrow {
+  left: -20px;
+}
+
+.custom-next-arrow {
+  right: -20px; 
+}
+
+
+.main-slide .slick-prev,
+.main-slide .slick-next {
+    font-size: initial;
+    line-height: initial;
+    position: absolute;
+    top: 45%;
+    display: block;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    transform: translate(0, -50%);
+    cursor: pointer;
+    border: none;
+    z-index: 99;
+    outline: none;
+}
+
+.main-slide .slick-prev::before,
+.main-slide .slick-next::before {
+    content: '';
+}
+
+.main-slide .slick-next {
+    right: 20px;
+}
+
+.main-slide .slick-prev {
+    left: -1px;
+}
+
+.Product-slider-heading {
+  margin-top: 2.5rem;
+  margin-left: 2.0rem;
+  font-size: 2.0rem; 
+  font-weight: bold; 
+  color: #333; 
+}
 
 /* Mobile View */
 @media screen and (max-width: 768px) {
