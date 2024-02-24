@@ -5,47 +5,42 @@ import 'slick-carousel/slick/slick-theme.css';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const ProductsSlider = ({ data }) => {
-  const CustomPrevButton = (props) => (
-    <button
-      {...props}
-      className="slick-arrow custom-prev-button"
-    >
-      <FaChevronLeft/>
-    </button>
-  );
-
-  
-  const CustomNextButton = (props) => (
-    <button
-      {...props}
-      className="slick-arrow custom-next-button"
-       >
-      <FaChevronRight/>
-    </button>
-  );
-
-  var settings = {
-    dots: true,
+  let cardslide = {
+    dots: false,
     infinite: true,
     speed: 500,
+    arrows: true,
+    autoplay: true,
+    autoplaySpeed: 2000,
     slidesToShow: 4,
     slidesToScroll: 4,
-    autoplay: true,
-    initialSlide: 0,
-    prevArrow: <CustomPrevButton />, 
-    nextArrow: <CustomNextButton />, 
+    // centerPadding: "20px",
+    prevArrow: (
+      <div className="custom-prev-arrow">
+        <button className='rounded-pill btn btn-light home-slide-btn'>
+          <FaChevronLeft/>
+        </button>
+      </div>
+    ),
+    nextArrow: (
+      <div className="custom-next-arrow">
+        <button className='rounded-pill btn btn-light home-slide-btn'>
+          <FaChevronRight/>
+        </button>
+      </div>
+    ),
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1199.5,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true,
+          dots: true
         }
       },
       {
-        breakpoint: 600,
+        breakpoint: 992.5,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
@@ -53,19 +48,24 @@ const ProductsSlider = ({ data }) => {
         }
       },
       {
-        breakpoint: 480,
+        breakpoint: 567.5,
         settings: {
+          centerMode: true,
           slidesToShow: 1,
-          slidesToScroll: 1,
+          arrows: false,
+          slidesToScroll: 1
         }
       }
-    ]
+    ],
+    customPaging: function (i) {
+      return <div>{i + 1}</div>; // Customize the indicator label as needed
+    },
   };
 
   return (
-    <Container fluid>
-      <Row className="slider-container">
-        <Slider {...settings}>
+    <Container >
+      <Row className="main-slide">
+        <Slider {...cardslide}>
           {data.map((item, index) => (
             <Col key={index} className="mb-4">
               <Card>

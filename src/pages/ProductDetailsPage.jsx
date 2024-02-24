@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { Container, Row, Col, Image } from 'react-bootstrap';
-import { Button, Form, Tabs, Tab } from 'react-bootstrap';
-import { FaCircle } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import { useParams, Link } from 'react-router-dom';
-import Ratings from '../components/common/Ratings';
-import Reviews from '../components/shop/Reviews';
-import axios from 'axios';
-import tssurl from '../port';
-import ProductsSlider from '../components/shop/ProductSlider';
+import { useState, useEffect } from "react";
+import { Container, Row, Col, Image } from "react-bootstrap";
+import { Button, Form, Tabs, Tab } from "react-bootstrap";
+import { FaCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import Ratings from "../components/common/Ratings";
+import Reviews from "../components/shop/Reviews";
+import axios from "axios";
+import tssurl from "../port";
+import ProductsSlider from "../components/shop/ProductSlider";
 
 const ProductDetailsPage = () => {
   const { pid: productId } = useParams();
@@ -27,7 +27,7 @@ const ProductDetailsPage = () => {
         );
         setProduct(data);
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error("Error fetching product:", error);
       } finally {
         setLoading(false);
       }
@@ -36,7 +36,7 @@ const ProductDetailsPage = () => {
         const response = await axios.get(`${tssurl}/productcat/products`);
         setProducts(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -56,14 +56,34 @@ const ProductDetailsPage = () => {
   const handleQtyChange = (e) => {
     setQty(parseInt(e.target.value, 10));
   };
+  
+  const mid=localStorage.getItem("MID");
 
   const addToCartHandler = () => {
-    const updatedCart = [...cart, { ...product, qty }];
-    setCart(updatedCart);
+    const data = {
+      mid: mid,
+      pid: productId,
+    };
 
-    navigate('/cart/carts');
+    fetch(`${tssurl}/cart/carts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        console.log("Add to cart successful:", response);
+        const updatedCart = [...cart, { ...product, qty }];
+         setCart(updatedCart);
+        navigate("/cart/carts");
+      })
+      .catch((error) => {
+        console.error("Error adding to cart:", error);
+      });
   };
 
+  console.log("cart", cart);
   return (
     <Container>
       <Link className="btn btn-light my-3" to="/products">
@@ -84,14 +104,14 @@ const ProductDetailsPage = () => {
             </Col>
           </Row>
           <h6 className="mt-2">
-            Color:{' '}
+            Color:{" "}
             <span>
               {colors.map((color, index) => (
                 <FaCircle
                   key={index}
                   style={{
                     color: index === color.value && color.value,
-                    cursor: 'pointer',
+                    cursor: "pointer",
                   }}
                 />
               ))}
@@ -149,26 +169,26 @@ const ProductDetailsPage = () => {
             fill
           >
             <Tab eventKey="details" title="Details">
-              <span style={{ textAlign: 'justify' }}>
+              <span style={{ textAlign: "justify" }}>
                 {parseHtmlToText(product_detail)}
               </span>
             </Tab>
             <Tab eventKey="fabric" title="Fabric">
-              <span style={{ textAlign: 'justify' }}>
+              <span style={{ textAlign: "justify" }}>
                 {fabricList.map((fabric, index) => (
                   <li key={index}>{fabric}</li>
                 ))}
               </span>
             </Tab>
             <Tab eventKey="fit" title="Fit">
-              <span style={{ textAlign: 'justify' }}>
+              <span style={{ textAlign: "justify" }}>
                 {fitOptions.map((fit, index) => (
                   <li key={index}>{fit}</li>
                 ))}
               </span>
             </Tab>
             <Tab eventKey="about" title="About">
-              <span style={{ textAlign: 'justify' }}>
+              <span style={{ textAlign: "justify" }}>
                 {parseHtmlToText(product.about)}
               </span>
             </Tab>
@@ -176,9 +196,10 @@ const ProductDetailsPage = () => {
         </Col>
       </Row>
       <Row>
-      <div className="mt-5">
-        <ProductsSlider data={products} />
-      </div>
+        <div className="Product-slider-heading">Others Also Viewed</div>
+        <div className="mt-5">
+          <ProductsSlider data={products} />
+        </div>
       </Row>
       <div className="py-4">
         <Reviews />
@@ -189,14 +210,14 @@ const ProductDetailsPage = () => {
 
 const parseHtmlToList = (htmlString) => {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlString, 'text/html');
-  const fitListItems = doc.querySelectorAll('ol li');
+  const doc = parser.parseFromString(htmlString, "text/html");
+  const fitListItems = doc.querySelectorAll("ol li");
   return Array.from(fitListItems).map((item) => item.textContent.trim());
 };
 
 const parseHtmlToText = (htmlString) => {
-  const doc = new DOMParser().parseFromString(htmlString, 'text/html');
-  return doc.body.textContent || '';
+  const doc = new DOMParser().parseFromString(htmlString, "text/html");
+  return doc.body.textContent || "";
 };
 
 export default ProductDetailsPage;
