@@ -149,7 +149,7 @@ const ProfilePage = () => {
     birth_date:formData.birth_date,
     gender:formData.gender
   };
-
+  console.log("for",formDataToUpdate);
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -256,10 +256,10 @@ const ProfilePage = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="dob">Date of Birth:</label>
+                      <label htmlFor="birth_date">Date of Birth:</label>
                       <input
-                        type="date"
-                        id="dob"
+                        // type="date"
+                        id="birth_date"
                         name="birth_date"
                         value={formData?.birth_date}
                         onChange={handleChange}
@@ -360,11 +360,11 @@ const ProfilePage = () => {
           <Col md={7}>
             <Swiper
               modules={[Navigation, Pagination, Scrollbar, A11y]}
-              spaceBetween={20}
+              spaceBetween={70}
               slidesPerView={3}
-              // navigation
+              navigation
               pagination={{ clickable: true }}
-              scrollbar={{ draggable: true }}
+              // scrollbar={{ draggable: true }}
               onSwiper={(swiper) => console.log(swiper)}
               onSlideChange={() => console.log("slide change")}
             >
