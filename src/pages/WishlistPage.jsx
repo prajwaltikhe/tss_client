@@ -84,7 +84,7 @@ const WishlistPage = () => {
           </Button>
         </div>
       ) : (
-        <Container fluid>
+        <Container>
           <Row className="g-4">
             {likedProducts.map((product, index) => (
               <Col key={product._id} xs={12} sm={6} md={4} lg={3}>
@@ -122,18 +122,18 @@ const WishlistPage = () => {
                       </div>
                     )}
                   </div>
-                  <Link to={`/productDetails/${product.pid}`}>
-                    <Card.Body className="p-0 mt-1">
-                      <Card.Title as="div">
-                        <strong className="text-dark mb-0 product-title">
-                          {product.product_name}
-                        </strong>
-                      </Card.Title>
-                      <Card.Text>
-                        <p className="mb-0 price">${product.unit_price}</p>
-                      </Card.Text>
-                    </Card.Body>
-                  </Link>
+                  {/* <Link to={`/productDetails/${product.pid}`}> */}
+                  <Card.Body className="p-0 mt-1">
+                    <Card.Title as="div">
+                      <strong className="text-dark mb-0 product-title">
+                        {product.product_name}
+                      </strong>
+                    </Card.Title>
+                    <Card.Text>
+                      <p className="mb-0 price">${product.unit_price}</p>
+                    </Card.Text>
+                  </Card.Body>
+                  {/* </Link> */}
                 </Card>
               </Col>
             ))}

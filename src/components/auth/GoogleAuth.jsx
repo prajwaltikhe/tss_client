@@ -1,82 +1,54 @@
-import { useEffect } from 'react';
-import { GoogleLogin } from 'react-google-login';
-import { gapi } from 'gapi-script';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
+import tssurl from "../../port";
 
-const GoogleAuth = ({ authMode }) => {
-  useEffect(() => {
-    const loadGoogleSignInScript = () => {
-      const script = document.createElement('script');
-      script.src = 'https://accounts.google.com/gsi/client';
-      script.async = true;
-      script.defer = true;
-      script.onload = () => initializeGoogleSignIn();
-      document.body.appendChild(script);
-    };
+const GoogleSignIn = ({ authMode }) => {
+  const handleGoogleLoginSuccess = async (userData) => {
+    try {
+      const response = await axios.post(`${tssurl}/auth/Login`, userData);
+      console.log("User data sent to backend successfully:", response.data);
+      toast.success("Login Successful");
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
-    const initializeGoogleSignIn = () => {
-      window.onSignInSuccess = (response) => {
-        const idToken = response.getAuthResponse().id_token;
-        axios.defaults.headers.common['Authorization'] = `Bearer ${idToken}`;
+  const handleGoogleLoginCallback = async (credentialResponse) => {
+    try {
+      const decoded = jwtDecode(credentialResponse.credential);
+
+      const userData = {
+        name: decoded.name,
+        email: decoded.email,
       };
+      console.log(userData);
 
-      window.onSignInFailure = (error) =>
-        console.error('Error signing in:', error);
-
-      window.google.accounts.id.initialize({
-        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-        callback: {
-          on_success: window.onSignInSuccess,
-          on_failure: window.onSignInFailure,
-        },
-      });
-
-      window.google.accounts.id.renderButton(
-        document.getElementById('signInDiv'),
-        { theme: 'outline', size: 'large' }
-      );
-    };
-
-    loadGoogleSignInScript();
-  }, []);
-
-  const handleGoogleLoginSuccess = (response) => {
-    const token = response.tokenId;
-    axios
-      .post('http://localhost:5200/client/google-login', { token })
-      .then((response) => response.data)
-      .then((data) => console.log('Backend response:', data))
-      .catch((error) => console.error('Error:', error));
+      await handleGoogleLoginSuccess(userData);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
-  const handleGoogleLoginFailure = (error) => {
-    console.error('Google login failure:', error);
-  };
-
-  useEffect(() => {
-    gapi.load('client:auth2', () => {
-      gapi.client.init({
-        clientId:
-          '156987578910-u2mg62hrg7dk6d2deunerts475sr59mb.apps.googleusercontent.com',
-        scope: 'email',
-      });
-    });
-  }, []);
   return (
     <>
       <div className="text-center mt-2">
-        <GoogleLogin
-          clientId="156987578910-u2mg62hrg7dk6d2deunerts475sr59mb.apps.googleusercontent.com"
-          buttonText={
-            authMode === 'signin' ? 'Login with Google' : 'Sign Up with Google'
-          }
-          onSuccess={handleGoogleLoginSuccess}
-          onFailure={handleGoogleLoginFailure}
-          cookiePolicy={'single_host_origin'}
-        />
+        <div style={{ display: "inline-block" }}>
+          <GoogleOAuthProvider clientId="806387431963-2hgpkpm22ckq3hm8b4458m3eii06khdq.apps.googleusercontent.com">
+            <GoogleLogin
+              onSuccess={handleGoogleLoginCallback}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+          </GoogleOAuthProvider>
+        </div>
       </div>
     </>
   );
 };
 
-export default GoogleAuth;
+export default GoogleSignIn;
