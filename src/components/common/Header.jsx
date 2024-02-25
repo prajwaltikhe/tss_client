@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Navbar, Nav, Container, Image, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, Image } from 'react-bootstrap';
+import { NavDropdown, Tabs, Tab } from 'react-bootstrap';
 import { FaShoppingCart, FaStar, FaSearch, FaUser } from 'react-icons/fa';
 import axios from 'axios';
 import tssurl from '../../port';
@@ -10,17 +11,17 @@ const Header = () => {
   const [logo, setLogo] = useState('');
   const [head, setHead] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [show, setShow] = useState(false);
+
   const handleShow = () => setShow(true);
 
   const isUserLoggedIn = () => {
     const authToken = localStorage.getItem('authToken');
-    return authToken && authToken !== '';
+    return !!authToken;
   };
 
   useEffect(() => {
-    setIsLoggedIn(isUserLoggedIn(true));
+    setIsLoggedIn(isUserLoggedIn());
   }, []);
 
   const fetchHeader = async () => {
@@ -40,8 +41,14 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     setIsLoggedIn(false);
-    toast.success('Sign Out Successfull');
+    toast.success('Sign Out Successful');
   };
+
+  const getDefaultActiveKey = () => {
+    const mainMenu = head?.find((menu) => menu?.Mname === 'WOMEN');
+    return mainMenu ? mainMenu.MLink : '';
+  };
+
   return (
     <header>
       <Navbar expand="md" collapseOnSelect>
@@ -78,19 +85,30 @@ const Header = () => {
           </Nav>
         </Container>
       </Navbar>
-      <Container fluid>
-        <Nav className="menu">
-          {head &&
-            head.map((menu) => (
-              <NavDropdown key={menu.MLink} title={menu.Mname} id={menu.MLink}>
-                {menu.nav_link.map((item) => (
-                  <NavDropdown.Item key={item.link} href={item.link}>
-                    {item.name}
-                  </NavDropdown.Item>
-                ))}
-              </NavDropdown>
+      <Container className="navbar-tabs">
+        {head && (
+          <Tabs
+            getDefaultActiveKey={getDefaultActiveKey}
+            id="controlled-tab"
+            className="mt-1"
+          >
+            {head.map((menu) => (
+              <Tab key={menu.MLink} eventKey={menu.MLink} title={menu.Mname}>
+                <Nav className="flex-row">
+                  {menu?.nav_link?.map((item) => (
+                    <Nav.Link
+                      key={item?.link}
+                      href={`/${item?.link}`}
+                      style={{ fontSize: '1.1rem' }}
+                    >
+                      {item.name}
+                    </Nav.Link>
+                  ))}
+                </Nav>
+              </Tab>
             ))}
-        </Nav>
+          </Tabs>
+        )}
       </Container>
     </header>
   );

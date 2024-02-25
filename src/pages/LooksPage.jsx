@@ -26,7 +26,7 @@ const LooksPage = () => {
 
   return (
     <Container fluid>
-      <Row className="text-center mt-2">
+      <Row className="text-center mt-3">
         <h3 className="fw-bold">All Looks</h3>
       </Row>
       <LooksData data={looksData} />

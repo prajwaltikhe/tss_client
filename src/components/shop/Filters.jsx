@@ -23,6 +23,16 @@ const Filters = ({ products, setFilteredProducts }) => {
     []
   );
 
+  const ratingRanges = useMemo(
+    () => [
+      { label: '4.1 - 5', min: 4.1, max: 5 },
+      { label: '3.1 - 4', min: 3.1, max: 4 },
+      { label: '2.1 - 3', min: 2.1, max: 3 },
+      { label: '1 - 2', min: 1, max: 2 },
+    ],
+    []
+  );
+
   const filterProducts = useCallback(() => {
     let filtered = [...products];
 
@@ -195,20 +205,22 @@ const Filters = ({ products, setFilteredProducts }) => {
       <ListGroup.Item as={Form}>
         <Form.Group controlId="ratingsFilter">
           <Form.Label>Ratings:</Form.Label>
-          {[1, 2, 3, 4, 5].map((ratingOption) => (
+          {ratingRanges.map((range) => (
             <Form.Check
-              key={ratingOption}
+              key={range.label}
               type="checkbox"
               label={
                 <>
-                  <Ratings value={ratingOption} />
+                  <div className="flex">
+                    <Ratings value={range.min} />{' '}
+                    <span className="ms-1">& up</span>
+                  </div>
                 </>
               }
               checked={ratingFilters.some(
-                (filter) =>
-                  ratingOption >= filter.min && ratingOption <= filter.max
+                (filter) => range.min >= filter.min && range.max <= filter.max
               )}
-              onChange={() => handleRatingChange(ratingOption, ratingOption)}
+              onChange={() => handleRatingChange(range.min, range.max)}
             />
           ))}
         </Form.Group>

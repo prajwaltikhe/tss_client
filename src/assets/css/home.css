@@ -5,6 +5,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant&display=swap');
 
 /* Slider */
+.carousel-item img {
+  width: 100%;
+  height: 45%;
+}
 .carousel-item::before {
   content: '';
   position: absolute;
@@ -14,12 +18,8 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.carousel-item img {
-  width: 100%;
-  height: 40rem;
-}
 .carousel-caption {
-  top: 40%;
+  top: 42%;
   z-index: 1;
   color: white;
   transform: translateY(-50%, -50%);
@@ -41,13 +41,13 @@
 
 /* Offer */
 .offer .col-md-4 img {
-  width: 85%;
+  width: 100%;
 }
 .off-card {
   border-radius: 1rem;
   text-align: center;
   border: 1px solid #b59410;
-  padding: 1.5rem;
+  padding: 2rem;
   transition: box-shadow 0.3s ease-in-out;
 }
 .off-card:hover {
@@ -60,7 +60,7 @@
   font-family: 'Berkshire Swash', cursive;
 }
 .off-card h1 {
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-family: 'AR one sans', sans-serif;
 }
 .off-card .flex hr {
@@ -92,7 +92,7 @@
 
 /* Collection */
 .collection img {
-  height: 35rem;
+  height: 40rem;
 }
 .collect2 {
   position: relative;
@@ -104,7 +104,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
-  font-size: 2.25rem;
+  font-size: 2.2rem;
   color: white;
   width: 25rem;
 }
@@ -115,10 +115,10 @@
 
 /* Best Sellers */
 .bestsellers {
-  margin: 2.75rem 2rem 3rem 2rem;
+  margin: 3rem 2rem 3.25rem 2rem;
 }
 .bestsellers img {
-  height: 25rem;
+  height: 30rem;
   width: 100%;
 }
 .bestsellers a {
@@ -129,10 +129,10 @@
 }
 .bestsellers p {
   margin-top: 1.25rem;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.25rem;
 }
 .bestsellers h5 {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
 /* Event */
@@ -148,7 +148,7 @@
 .event2 img,
 .event1 img {
   width: 100%;
-  height: 35rem;
+  height: 40rem;
 }
 
 .event1 a {
@@ -182,7 +182,7 @@
 }
 .grid img {
   width: 100%;
-  height: 30rem;
+  height: 35rem;
   position: relative;
   z-index: 0;
 }

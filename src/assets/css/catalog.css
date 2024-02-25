@@ -1,10 +1,8 @@
-/* Default Styles */
 .looksdata img {
   height: 20rem;
 }
-
 .catslide img {
-  height: 30rem;
+  height: 100%;
   width: 100%;
 }
 .catslide .col-md-12,
@@ -14,18 +12,17 @@
 .cat5 .col-md-12 {
   padding: 0;
 }
-
 .cat2 img,
 .cat4 img {
   width: 100%;
-  height: 20rem;
+  height: 100%;
 }
 .cat2 h4,
 .cat4 h4 {
-  margin: 3rem;
+  margin: 4rem;
+  line-height: 2rem;
   text-align: justify;
 }
-
 .cat3,
 .cat5 {
   position: relative;
@@ -33,7 +30,7 @@
 .cat3 img,
 .cat5 img {
   width: 100%;
-  height: 30rem;
+  height: 100%;
   z-index: 0;
 }
 .cat3 p,
@@ -43,20 +40,22 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
-  font-size: 1.6rem;
-  color: black;
+  text-align: center;
+  font-size: 1.8rem;
+  color: white;
 }
 .cat5 .btn {
   margin-top: 0.2rem;
-  padding: 0.25rem 1rem;
-  font-size: 1.2rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0;
+  font-size: 1.1rem;
 }
 .cat5text h5 {
   color: white;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.2rem;
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 /* Mobile View */

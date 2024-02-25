@@ -27,9 +27,9 @@ const Reviews = ({ productID }) => {
 
   return (
     <Container>
-      <div className="review-head fw-bold">
-        <h5>Ratings and Reviews</h5>
-        <p>Add Review</p>
+      <div className="d-flex justify-content-between my-3">
+        <h5 className="fw-bold">Ratings and Reviews</h5>
+        <span className="fw-bold text-end">Add Review</span>
       </div>
       <div className="review-body">
         <Row>

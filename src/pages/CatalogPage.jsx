@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Container, Row, Col, Image, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import Tags from '../components/common/Tags';
-import catalog from '../assets/images/catalog.png';
 import { Looks } from '../components/catalog/Looks';
+import Tags from '../components/common/Tags';
 import tssurl from '../port';
 
 const CatalogPage = () => {
@@ -41,6 +40,7 @@ const CatalogPage = () => {
     buttonText: catItems?.catalogItems?.[0]?.[area]?.buttonText || '',
   });
 
+  const cat1 = getImageAndLink('inputArea1');
   const cat2 = getImageAndLink('inputArea2');
   const cat3 = getImageAndLink('inputArea3');
   const cat4 = getImageAndLink('inputArea4');
@@ -61,7 +61,7 @@ const CatalogPage = () => {
         <Row className="catslide">
           <Tags />
           <Col md={12}>
-            <Image src={catalog} alt="catalog" fluid />
+            <Image src={cat1.image} alt="catalog" fluid />
           </Col>
         </Row>
         <Looks data={looks} />
