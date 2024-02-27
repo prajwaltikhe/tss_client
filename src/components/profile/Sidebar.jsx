@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { BsChevronRight } from 'react-icons/bs';
+import { toast } from 'react-toastify';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -20,6 +21,7 @@ const Sidebar = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('MID');
     setIsLoggedIn(false);
+    toast.success("Logout successfully");
     navigate('/');
   };
 

@@ -92,62 +92,84 @@ const AddressCard = ({ address, onDelete, updateAddress }) => {
       </Card>
 
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Address</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formPhone">
-              <Form.Label>Phone Number</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter phone number"
-                name="phone_no"
-                value={formData.phone_no}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formZipcode">
-              <Form.Label>Zipcode</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter zipcode"
-                name="zipcode"
-                value={formData.zipcode}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formCountry">
-              <Form.Label>Country</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter country"
-                name="country"
-                value={formData.country}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formLandmark">
-              <Form.Label>Landmark</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter landmark"
-                name="landmark"
-                value={formData.landmark}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={() => handleSubmit(address._id)}>
-            Update
-          </Button>
-        </Modal.Footer>
-      </Modal>
+  <Modal.Header closeButton>
+    <Modal.Title>Edit Address</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Form>
+      <Form.Group controlId="formPhone">
+        <Form.Label>Phone Number</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter phone number"
+          name="phone_no"
+          value={formData.phone_no}
+          onChange={handleChange}
+        />
+      </Form.Group>
+      <Form.Group controlId="formZipcode">
+        <Form.Label>Postal Code</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter zipcode"
+          name="zipcode"
+          value={formData.zipcode}
+          onChange={handleChange}
+        />
+      </Form.Group>
+      <Form.Group controlId="formCountry">
+        <Form.Label>County/Region</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter country"
+          name="country"
+          value={formData.country}
+          onChange={handleChange}
+        />
+      </Form.Group>
+      <Form.Group controlId="formLandmark">
+        <Form.Label>Address</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter landmark"
+          name="landmark"
+          value={formData.landmark}
+          onChange={handleChange}
+        />
+      </Form.Group>
+
+      {/* Default checkbox */}
+      <Form.Group controlId="formDefault">
+        <Form.Check
+          type="checkbox"
+          label="Default"
+          // checked={isDefault}
+          // onChange={handleDefaultChange}
+        />
+      </Form.Group>
+
+      {/* Address selected checkbox */}
+      <Form.Group controlId="formAddressSelected">
+        <Form.Check
+          type="checkbox"
+          label="Address Selected"
+          // checked={isAddressSelected}
+          // onChange={handleAddressSelectedChange}
+        />
+      </Form.Group>
+    </Form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleCloseModal}>
+      Cancel
+    </Button>
+    <Button variant="primary" onClick={() => handleSubmit(address._id)}>
+      Update
+    </Button>
+  </Modal.Footer>
+</Modal>
+
+
     </>
   );
 };
