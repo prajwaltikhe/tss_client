@@ -11,7 +11,10 @@ const AddAddressModal = ({
   const [landmark, setLandmark] = useState('');
   const [zipcode, setZipcode] = useState('');
   const [phoneNo, setPhoneNo] = useState('');
+  const [addressType, setAddressType] = useState('normal'); // Default to 'normal' address type
+  const [isSelected, setIsSelected] = useState(false); // Initialize isSelected state as false
 
+  console.log("hello",)
   return (
     <Modal show={showModal} onHide={handleCloseModal} size="sm">
       <Modal.Header closeButton>
@@ -20,7 +23,7 @@ const AddAddressModal = ({
       <Modal.Body>
         <Form>
           <Form.Group controlId="formLandmark">
-            <Form.Label>Landmark:</Form.Label>
+            <Form.Label>Address:</Form.Label>
             <Form.Control
               type="text"
               value={landmark}
@@ -30,7 +33,7 @@ const AddAddressModal = ({
           </Form.Group>
 
           <Form.Group controlId="formCountry">
-            <Form.Label>Country:</Form.Label>
+            <Form.Label>CountyRegion:</Form.Label>
             <Form.Control
               type="text"
               value={country}
@@ -40,7 +43,7 @@ const AddAddressModal = ({
           </Form.Group>
 
           <Form.Group controlId="formZipcode">
-            <Form.Label>Zipcode:</Form.Label>
+            <Form.Label>Postal Code:</Form.Label>
             <Form.Control
               type="text"
               value={zipcode}
@@ -58,6 +61,40 @@ const AddAddressModal = ({
               required
             />
           </Form.Group>
+
+          <Form.Group>
+            <Form.Check
+              type="checkbox"
+              label="Address Selected"
+              checked={isSelected}
+              onChange={(e) => setIsSelected(e.target.checked)}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Address Type:</Form.Label>
+            <div>
+              <Form.Check
+                inline
+                type="radio"
+                label="Default"
+                name="addressType"
+                value="default"
+                checked={addressType === 'default'}
+                onChange={() => setAddressType('default')}
+              />
+              <Form.Check
+                inline
+                type="radio"
+                label="Normal"
+                name="addressType"
+                value="normal"
+                checked={addressType === 'normal'}
+                onChange={() => setAddressType('normal')}
+              />
+            </div>
+          </Form.Group>
+
         </Form>
       </Modal.Body>
       <Modal.Footer>
@@ -66,7 +103,16 @@ const AddAddressModal = ({
         </Button>
         <Button
           variant="primary"
-          onClick={() => handleAdd({ country, landmark, zipcode, phoneNo })}
+          onClick={() =>
+            handleAdd({
+              country,
+              landmark,
+              zipcode,
+              phoneNo,
+              addressType,
+              isSelected,
+            })
+          }
         >
           Add
         </Button>

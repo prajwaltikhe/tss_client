@@ -348,6 +348,7 @@ const ProfilePage = () => {
 
           <Col md={7}>
             <Swiper
+            
               modules={[Navigation, Pagination, Scrollbar, A11y]}
               spaceBetween={70}
               slidesPerView={3}
