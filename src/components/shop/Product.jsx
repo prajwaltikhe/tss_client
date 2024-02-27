@@ -8,7 +8,6 @@ import tssurl from '../../port';
 
 const Product = ({ product }) => {
   const [likedProducts, setLikedProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const thumbImgUrl = product.variants?.[0]?.ThumbImg?.[0];
   const colors = product.colors;
   const MID = localStorage.getItem('MID');
@@ -20,10 +19,8 @@ const Product = ({ product }) => {
           `${tssurl}/liked/liked-products/${MID}`
         );
         setLikedProducts(response.data.likedProducts);
-        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching liked products:', error);
-        setIsLoading(false);
       }
     };
 

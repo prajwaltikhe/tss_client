@@ -14,7 +14,7 @@ const AddAddressModal = ({
   const [addressType, setAddressType] = useState('normal'); // Default to 'normal' address type
   const [isSelected, setIsSelected] = useState(false); // Initialize isSelected state as false
 
-  console.log("hello",)
+  console.log('hello');
   return (
     <Modal show={showModal} onHide={handleCloseModal} size="sm">
       <Modal.Header closeButton>
@@ -94,7 +94,6 @@ const AddAddressModal = ({
               />
             </div>
           </Form.Group>
-
         </Form>
       </Modal.Body>
       <Modal.Footer>

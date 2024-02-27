@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Card, Nav, Modal, Button, Form } from 'react-bootstrap';
+import { Card, Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import tssurl from '../../port';
 
 const AddressCard = ({ address, onDelete, updateAddress }) => {
@@ -62,7 +63,7 @@ const AddressCard = ({ address, onDelete, updateAddress }) => {
   return (
     <>
       <Card className="add-card">
-        <Card.Body>
+        <Card.Body className="px-3 pb-0 m-0">
           <div className="d-flex justify-content-between">
             <Card.Title>{address?.landmark}</Card.Title>
             <button className="card-button">Home</button>
@@ -75,101 +76,96 @@ const AddressCard = ({ address, onDelete, updateAddress }) => {
             <p className="card-text">Phone:</p>
             <p>{address?.phone_no}</p>
           </div>
-          <div className="d-flex justify-content-between">
-            <div className="d-flex gap-2">
-              <Nav.Link className="text-decoration-none" onClick={handleEdit}>
-                edit
-              </Nav.Link>
-              <Nav.Link className="text-decoration-none" onClick={handleDelete}>
+          <Row className="d-flex justify-content-between">
+            <Col md="3">
+              <Link
+                className="text-dark text-decoration-none w-100"
+                onClick={handleEdit}
+              >
+                Edit
+              </Link>
+            </Col>
+            <Col md="3">
+              <Link
+                className="text-dark text-decoration-none w-100"
+                onClick={handleDelete}
+              >
                 Delete
-              </Nav.Link>
-            </div>
-            <Nav.Link className="custom-color text-decoration-none">
-              Address Selected
-            </Nav.Link>
-          </div>
+              </Link>
+            </Col>
+            <Col md="6">
+              <p className="custom-color w-100 text-decoration-none">
+                Address Selected
+              </p>
+            </Col>
+          </Row>
         </Card.Body>
       </Card>
 
       <Modal show={showModal} onHide={handleCloseModal}>
-  <Modal.Header closeButton>
-    <Modal.Title>Edit Address</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <Form>
-      <Form.Group controlId="formPhone">
-        <Form.Label>Phone Number</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter phone number"
-          name="phone_no"
-          value={formData.phone_no}
-          onChange={handleChange}
-        />
-      </Form.Group>
-      <Form.Group controlId="formZipcode">
-        <Form.Label>Postal Code</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter zipcode"
-          name="zipcode"
-          value={formData.zipcode}
-          onChange={handleChange}
-        />
-      </Form.Group>
-      <Form.Group controlId="formCountry">
-        <Form.Label>County/Region</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter country"
-          name="country"
-          value={formData.country}
-          onChange={handleChange}
-        />
-      </Form.Group>
-      <Form.Group controlId="formLandmark">
-        <Form.Label>Address</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter landmark"
-          name="landmark"
-          value={formData.landmark}
-          onChange={handleChange}
-        />
-      </Form.Group>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Address</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formLandmark">
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter landmark"
+                name="landmark"
+                value={formData.landmark}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formCountry">
+              <Form.Label>County/Region</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter country"
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formZipcode">
+              <Form.Label>Postal Code</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter zipcode"
+                name="zipcode"
+                value={formData.zipcode}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formPhone">
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter phone number"
+                name="phone_no"
+                value={formData.phone_no}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formDefault">
+              <Form.Check type="checkbox" label="Default" />
+            </Form.Group>
 
-      {/* Default checkbox */}
-      <Form.Group controlId="formDefault">
-        <Form.Check
-          type="checkbox"
-          label="Default"
-          // checked={isDefault}
-          // onChange={handleDefaultChange}
-        />
-      </Form.Group>
-
-      {/* Address selected checkbox */}
-      <Form.Group controlId="formAddressSelected">
-        <Form.Check
-          type="checkbox"
-          label="Address Selected"
-          // checked={isAddressSelected}
-          // onChange={handleAddressSelectedChange}
-        />
-      </Form.Group>
-    </Form>
-  </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseModal}>
-      Cancel
-    </Button>
-    <Button variant="primary" onClick={() => handleSubmit(address._id)}>
-      Update
-    </Button>
-  </Modal.Footer>
-</Modal>
-
-
+            <Form.Group controlId="formAddressSelected">
+              <Form.Check type="checkbox" label="Address Selected" />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={() => handleSubmit(address._id)}>
+            Update
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

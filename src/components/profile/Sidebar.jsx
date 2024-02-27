@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ListGroup } from 'react-bootstrap';
+import { Container, ListGroup } from 'react-bootstrap';
 import { BsChevronRight } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import { useNavigate, Link } from 'react-router-dom';
@@ -21,52 +21,57 @@ const Sidebar = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('MID');
     setIsLoggedIn(false);
-    toast.success("Logout successfully");
+    toast.success('Logout successfully');
     navigate('/');
   };
 
   return (
-    <ListGroup className="sidebar">
-      <Link to="/profile" className="sidebar-link text-decoration-none">
+    <Container fluid>
+      <ListGroup className="sidebar">
+        <Link to="/profile" className="sidebar-link text-decoration-none">
+          <ListGroup.Item className="sidebar-item">
+            Profile
+            <BsChevronRight />
+          </ListGroup.Item>
+        </Link>
+        <Link
+          to="/changepassword"
+          className="sidebar-link text-decoration-none"
+        >
+          <ListGroup.Item className="sidebar-item">
+            Change Password
+            <BsChevronRight />
+          </ListGroup.Item>
+        </Link>
         <ListGroup.Item className="sidebar-item">
-          Profile
+          Orders
           <BsChevronRight />
         </ListGroup.Item>
-      </Link>
-      <Link to="/changepassword" className="sidebar-link text-decoration-none">
         <ListGroup.Item className="sidebar-item">
-          Change Password
+          Payment Option
           <BsChevronRight />
         </ListGroup.Item>
-      </Link>
-      <ListGroup.Item className="sidebar-item">
-        Orders
-        <BsChevronRight />
-      </ListGroup.Item>
-      <ListGroup.Item className="sidebar-item">
-        Payment Option
-        <BsChevronRight />
-      </ListGroup.Item>
-      <ListGroup.Item className="sidebar-item">
-        Reward Points
-        <BsChevronRight />
-      </ListGroup.Item>
-      <ListGroup.Item className="sidebar-item">
-        Contact Us
-        <BsChevronRight />
-      </ListGroup.Item>
-      {isLoggedIn ? (
-        <ListGroup.Item className="sidebar-item" onClick={handleLogout}>
-          Log Out
-          <BsChevronRight />
-        </ListGroup.Item>
-      ) : (
         <ListGroup.Item className="sidebar-item">
-          Log In
+          Reward Points
           <BsChevronRight />
         </ListGroup.Item>
-      )}
-    </ListGroup>
+        <ListGroup.Item className="sidebar-item">
+          Contact Us
+          <BsChevronRight />
+        </ListGroup.Item>
+        {isLoggedIn ? (
+          <ListGroup.Item className="sidebar-item" onClick={handleLogout}>
+            Log Out
+            <BsChevronRight />
+          </ListGroup.Item>
+        ) : (
+          <ListGroup.Item className="sidebar-item">
+            Log In
+            <BsChevronRight />
+          </ListGroup.Item>
+        )}
+      </ListGroup>
+    </Container>
   );
 };
 
