@@ -16,6 +16,7 @@ const ProductSearch = ({ products, onSearch }) => {
           <Form.Group controlId="formSearch" className="flex">
             <Form.Control
               type="text"
+              id="searchTerm"
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

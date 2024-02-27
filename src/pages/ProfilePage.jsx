@@ -1,97 +1,94 @@
-import React, { useEffect, useState } from "react";
-import ShopTags from "../components/common/Tags";
-import { Row, Container, Col, Image } from "react-bootstrap";
-import Sidebar from "../components/profile/Sidebar";
-import { Modal, Button } from "react-bootstrap";
-import AddressCard from "../components/profile/AddressCard";
-import tssurl from "../port";
-import Profile from "../assets/images/profile1.png";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
-
-import { FaLocationDot } from "react-icons/fa6";
-import AddAddressModal from "../components/profile/AddressModal";
+import { useEffect, useState, useCallback } from 'react';
+import { Row, Container, Col, Image } from 'react-bootstrap';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import ShopTags from '../components/common/Tags';
+import Sidebar from '../components/profile/Sidebar';
+import AddressCard from '../components/profile/AddressCard';
+import AddAddressModal from '../components/profile/AddressModal';
+import { FaLocationDot } from 'react-icons/fa6';
+import Profile from '../assets/images/profile1.png';
+import axios from 'axios';
+import tssurl from '../port';
 
 const ProfilePage = () => {
-  const mID = localStorage.getItem("MID");
-  const authToken = localStorage.getItem("authToken");
+  const mID = localStorage.getItem('MID');
+  const authToken = localStorage.getItem('authToken');
   const handleAddAddress = async (addressData) => {
     try {
       const response = await fetch(`${tssurl}/auth/users/${mID}/addresses`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`, // Include the authentication token
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(addressData),
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Address added successfully:", data);
-        setShowModal(false); // Close the modal after adding the address
-        // Optionally reload the page if needed
+        console.log('Address added successfully:', data);
+        setShowModal(false);
       } else {
         const errorMessage = await response.text();
-        console.error("Failed to add address:", errorMessage);
+        console.error('Failed to add address:', errorMessage);
       }
       window.location.reload();
     } catch (error) {
-      console.error("Error adding address:", error);
+      console.error('Error adding address:', error);
     }
   };
 
   const [showModal, setShowModal] = useState(false);
   const [addresses, setAddresses] = useState([]);
   const addressesArray = Object.values(addresses);
-  useEffect(() => {
-    // Fetch addresses when component mounts
-    fetchAddresses();
-  }, []);
-  const fetchAddresses = async () => {
+
+  const fetchAddresses = useCallback(async () => {
     try {
-      const response = await fetch(`${tssurl}/auth/users/${mID}/addresses`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setAddresses(data);
-      } else {
-        console.error("Failed to fetch addresses:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error fetching addresses:", error);
-    }
-  };
-  const onDelete = async (addressID, mID) => {
-    try {
-      const response = await fetch(
-        `${tssurl}/auth/users/${mID}/addresses/${addressID}`,
+      const response = await axios.get(
+        `${tssurl}/auth/users/${mID}/addresses`,
         {
-          method: "DELETE",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
           },
         }
       );
 
-      if (response.ok) {
-        console.log("Address deleted successfully");
-        // Remove the deleted address card from the UI
+      if (response.status === 200) {
+        setAddresses(response.data);
+      } else {
+        console.error('Failed to fetch addresses:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching addresses:', error);
+    }
+  }, [mID, authToken]);
+
+  useEffect(() => {
+    fetchAddresses();
+  }, [fetchAddresses]);
+
+  const onDelete = async (addressID, mID) => {
+    try {
+      const response = await axios.delete(
+        `${tssurl}/auth/users/${mID}/addresses/${addressID}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log('Address deleted successfully');
         setAddresses(addresses.filter((address) => address._id !== addressID));
         window.location.reload();
       } else {
-        console.error("Failed to delete address:", response.statusText);
+        console.error('Failed to delete address:', response.statusText);
       }
     } catch (error) {
-      console.error("Error deleting address:", error);
+      console.error('Error deleting address:', error);
     }
   };
 
@@ -104,25 +101,25 @@ const ProfilePage = () => {
   };
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    dob: "",
-    gender: "",
-    mobileNo: "",
+    name: '',
+    email: '',
+    dob: '',
+    gender: '',
+    mobileNo: '',
   });
-  console.log("formdata", formData);
+  console.log('formdata', formData);
 
   const [originalFormData, setOriginalFormData] = useState({});
   const [editMode, setEditMode] = useState(false);
   //
-  const userId = localStorage.getItem("MID");
+  const userId = localStorage.getItem('MID');
   useEffect(() => {
     fetch(`${tssurl}/auth/users/${userId}`)
       .then((response) => {
         if (response.ok) {
           return response.json();
         } else {
-          throw new Error("Failed to fetch user data");
+          throw new Error('Failed to fetch user data');
         }
       })
       .then((userData) => {
@@ -130,7 +127,7 @@ const ProfilePage = () => {
         setOriginalFormData(userData);
       })
       .catch((error) => {
-        console.error("Error fetching user data:", error);
+        console.error('Error fetching user data:', error);
       });
   }, [userId]);
 
@@ -140,54 +137,47 @@ const ProfilePage = () => {
       ...formData,
       [name]: value,
     });
-    console.log("formData", formData);
+    console.log('formData', formData);
   };
   const formDataToUpdate = {
     name: formData.name,
     mobileNo: formData.mobileNo,
     gender: formData.gender,
-    birth_date:formData.birth_date,
-    gender:formData.gender
+    birth_date: formData.birth_date,
   };
-  console.log("for",formDataToUpdate);
+  console.log('for', formDataToUpdate);
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // Make sure to replace 'your-api-endpoint' with your actual API endpoint for updating user data
-      const response = await fetch(`${tssurl}/auth/users/${userId}`, {
-        method: "PUT", // or 'PATCH' depending on your API
-        headers: {
-          "Content-Type": "application/json",
-          // Add any additional headers if required, such as authorization token
-        },
+      const response = await axios.put(
+        `${tssurl}/auth/users/${userId}`,
+        formDataToUpdate,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-        body: JSON.stringify(formDataToUpdate), // Convert form data to JSON string
-      });
-
-      if (response.ok) {
-        // Update was successful
-        console.log("Form data updated successfully");
-        setEditMode(false); // Exit edit mode after successful update
+      if (response.status === 200) {
+        console.log('Form data updated successfully');
+        setEditMode(false);
       } else {
-        // Update failed
-        console.error("Failed to update form data");
-        // Handle error as needed, e.g., display error message to user
+        console.error('Failed to update form data');
       }
     } catch (error) {
-      console.error("Error updating form data:", error);
+      console.error('Error updating form data:', error);
     }
   };
 
   const handleCancel = () => {
-    setFormData(originalFormData); // Restore original form data
-    setEditMode(false); // Exit edit mode
-    window.location.reload(); // Reload the page
+    setFormData(originalFormData);
+    setEditMode(false);
+    window.location.reload();
   };
 
-  console.log("original", originalFormData);
+  console.log('original', originalFormData);
   const updateAddress = (addressId, updatedData) => {
-    // Update the address data in the local state or perform any other necessary actions
-    // For example:
     setAddresses(
       addresses.map((address) => {
         if (address._id === addressId) {
@@ -197,6 +187,7 @@ const ProfilePage = () => {
       })
     );
   };
+
   return (
     <>
       <Container fluid>
@@ -214,15 +205,14 @@ const ProfilePage = () => {
               <Col md={3}>
                 <div
                   className="profile-options "
-                  style={{ marginRight: "50px", marginTop: "25px" }}
+                  style={{ marginRight: '50px', marginTop: '25px' }}
                 >
                   <div className="profile-picture">
-                    {/* Profile picture goes here */}
                     <Image
                       src={Profile}
                       alt="Profile"
                       className="rounded-circle"
-                      style={{ width: "125px", height: "125px" }}
+                      style={{ width: '125px', height: '125px' }}
                     />
                   </div>
                   <div className="upload-new-picture">Upload New Picture</div>
@@ -258,7 +248,6 @@ const ProfilePage = () => {
                     <div className="form-group">
                       <label htmlFor="birth_date">Date of Birth:</label>
                       <input
-                        // type="date"
                         id="birth_date"
                         name="birth_date"
                         value={formData?.birth_date}
@@ -275,7 +264,7 @@ const ProfilePage = () => {
                             id="male"
                             name="gender"
                             value="male"
-                            checked={formData.gender === "male"}
+                            checked={formData.gender === 'male'}
                             onChange={handleChange}
                             disabled={!editMode}
                           />
@@ -287,7 +276,7 @@ const ProfilePage = () => {
                             id="female"
                             name="gender"
                             value="female"
-                            checked={formData.gender === "female"}
+                            checked={formData.gender === 'female'}
                             onChange={handleChange}
                             disabled={!editMode}
                           />
@@ -322,7 +311,7 @@ const ProfilePage = () => {
                         <button
                           className="card-button"
                           type="submit"
-                          style={{ marginRight: "20px" }}
+                          style={{ marginRight: '20px' }}
                         >
                           Update
                         </button>
@@ -364,9 +353,8 @@ const ProfilePage = () => {
               slidesPerView={3}
               navigation
               pagination={{ clickable: true }}
-              // scrollbar={{ draggable: true }}
               onSwiper={(swiper) => console.log(swiper)}
-              onSlideChange={() => console.log("slide change")}
+              onSlideChange={() => console.log('slide change')}
             >
               {Array.isArray(addressesArray) && addressesArray.length > 0 ? (
                 addressesArray[0].map((address) => (

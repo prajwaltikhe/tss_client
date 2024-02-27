@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Form, Tabs, Tab } from 'react-bootstrap';
-import { FaCircle } from 'react-icons/fa';
+import { FaCircle, FaPlus, FaMinus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useParams, Link } from 'react-router-dom';
 import Ratings from '../components/common/Ratings';
@@ -52,10 +52,12 @@ const ProductDetailsPage = () => {
   const fabricList = parseHtmlToList(product.fabric);
   const sizes = size?.map(({ name }) => name) || [];
 
-  const handleQtyChange = (e) => {
-    setQty(parseInt(e.target.value, 10));
+  const handleQtyChange = (change) => {
+    setQty((prevQty) => {
+      const newQty = Math.max(1, Math.min(10, prevQty + change));
+      return newQty;
+    });
   };
-
   const mid = localStorage.getItem('MID');
 
   const addToCartHandler = () => {
@@ -127,11 +129,7 @@ const ProductDetailsPage = () => {
             <Col md={6}>
               <h6 className="pt-2">Size*</h6>
               {sizes.map((size, index) => (
-                <Button
-                  variant="light"
-                  key={index}
-                  className="me-2 border-dark mb-2"
-                >
+                <Button variant="light" key={index} className="me-2 mb-2">
                   {size}
                 </Button>
               ))}
@@ -139,24 +137,21 @@ const ProductDetailsPage = () => {
                 <Link to="#">Size Guide</Link>
               </p>
             </Col>
-            <Col md={3}>
+            <Col md={4}>
               <h6>Quantity*</h6>
-              <Form.Control
-                className="quantity"
-                as="select"
-                value={qty}
-                onChange={handleQtyChange}
-              >
-                {[...Array(quantity_pi).keys()].map((i) => (
-                  <option key={i + 1} value={i + 1}>
-                    {i + 1}
-                  </option>
-                ))}
-              </Form.Control>
+              <div className="quantity-selector">
+                <Button variant="light" onClick={() => handleQtyChange(-1)}>
+                  <FaMinus size={10} />
+                </Button>
+                <span className="mx-4">{qty}</span>
+                <Button variant="light" onClick={() => handleQtyChange(1)}>
+                  <FaPlus size={10} />
+                </Button>
+              </div>
             </Col>
           </Row>
           <Row>
-            <Col md={6}>
+            <Col md={5}>
               <Button
                 variant="dark"
                 className="btn-block p-2 w-100"

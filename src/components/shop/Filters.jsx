@@ -189,12 +189,13 @@ const Filters = ({ products, setFilteredProducts }) => {
       <strong>Filters:</strong>
       <ListGroup.Item as={Form}>
         <Form.Group controlId="subcategoryFilter">
-          <Form.Label>Product Type:</Form.Label>
+          <Form.Label htmlFor="subcategoryFilter">Product Type:</Form.Label>
           {subcategories.map((subcategory) => (
             <Form.Check
               key={subcategory}
               type="checkbox"
               label={subcategory}
+              id={`subcategory-${subcategory}`}
               checked={subcategoryFilters.includes(subcategory)}
               onChange={() => handleSubcategoryChange(subcategory)}
             />
@@ -217,6 +218,7 @@ const Filters = ({ products, setFilteredProducts }) => {
                   </div>
                 </>
               }
+              id={`ratings-${range.label.replace(/\s+/g, '-').toLowerCase()}`}
               checked={ratingFilters.some(
                 (filter) => range.min >= filter.min && range.max <= filter.max
               )}
@@ -234,12 +236,13 @@ const Filters = ({ products, setFilteredProducts }) => {
               key={range.label}
               type="checkbox"
               label={range.label}
+              id={`price-${range.label.replace(/\s+/g, '-').toLowerCase()}`}
               checked={priceRange.some(
                 (selectedRange) =>
                   selectedRange.min === range.min &&
                   selectedRange.max === range.max
               )}
-              onClick={() => handlePriceChange(range)}
+              onChange={() => handlePriceChange(range)}
             />
           ))}
         </Form.Group>
@@ -253,6 +256,7 @@ const Filters = ({ products, setFilteredProducts }) => {
               key={size}
               type="checkbox"
               label={size}
+              id={`size-${size}`}
               checked={selectedSizes.includes(size)}
               onChange={() => handleSizeChange(size)}
             />
@@ -265,7 +269,7 @@ const Filters = ({ products, setFilteredProducts }) => {
           <Form.Label>Colors:</Form.Label>
           {colors.map((color) => (
             <Form.Check
-              key={color.name}
+              key={`${color.name}-${color.value}`}
               type="checkbox"
               label={
                 <>
@@ -275,6 +279,7 @@ const Filters = ({ products, setFilteredProducts }) => {
                   {color.name}
                 </>
               }
+              id={`color-${color.name.toLowerCase()}`}
               checked={selectedColors.includes(color.value)}
               onChange={() => handleColorChange(color)}
             />

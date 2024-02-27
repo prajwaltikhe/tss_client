@@ -28,25 +28,11 @@
   text-underline-offset: 0.2rem;
 }
 
-/* Login */
-.auth .active {
-  font-weight: bold;
-  text-decoration: underline;
-  text-underline-offset: 0.2rem;
-}
-.auth .col {
-  font-size: 1.35rem;
-  cursor: pointer;
-}
-
-.loginbtn {
-  text-align: center;
-  font-size: 1.1rem;
-  width: 7rem;
-}
-
 /* Common */
 @import url(./common.css);
+
+/* Auth */
+@import url(./auth.css);
 
 /* Home */
 @import url(./home.css);

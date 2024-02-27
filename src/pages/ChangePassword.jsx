@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
-import Sidebar from '../components/profile/Sidebar';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import axios from 'axios';
-import tssurl from '../port';
-import { toast } from 'react-toastify';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import Sidebar from '../components/profile/Sidebar';
 import ShopTags from '../components/common/Tags';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import tssurl from '../port';
 
 const ChangePassword = () => {
   const [passwords, setPasswords] = useState({

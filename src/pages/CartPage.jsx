@@ -1,14 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import offer2 from '../assets/images/offer2.png';
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Image,
-  Card,
-  Form,
-} from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Image, Card, Form } from 'react-bootstrap';
 import { FaRegHeart } from 'react-icons/fa';
 
 const CartPage = () => {

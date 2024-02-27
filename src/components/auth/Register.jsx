@@ -1,20 +1,23 @@
-import { Form, Modal, Button } from "react-bootstrap";
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-
-import axios from "axios";
-import tssurl from "../../port";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Form, Modal, Button, InputGroup } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import axios from 'axios';
+import tssurl from '../../port';
+import zxcvbn from 'zxcvbn';
 
 const Register = () => {
-  const [authMode, setAuthMode] = useState("signup");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [mobileNo, setMobileNo] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [authMode] = useState('signup');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [mobileNo, setMobileNo] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordStrength, setPasswordStrength] = useState('');
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
@@ -26,30 +29,71 @@ const Register = () => {
     const { value } = e.target;
     setConfirmPassword(value);
     setPasswordError(
-      password !== value ? "Passwords do not match" : "Passwords match"
+      password !== value ? 'Passwords do not match' : 'Passwords match'
     );
   };
 
-  const getPasswordValidationMessage = () =>
-    !password
-      ? null
-      : !/.{8,}/.test(password)
-      ? "Password length must be at least 8 characters"
-      : "Password is valid";
+  const handlePasswordStrength = (e) => {
+    const { value } = e.target;
+    setPassword(value);
+    const strengthScore = zxcvbn(value).score;
+    setPasswordStrength(getPasswordStrengthLabel(strengthScore));
+  };
+
+  const getPasswordStrengthLabel = (score) => {
+    switch (score) {
+      case 0:
+      case 1:
+        return 'Weak';
+      case 2:
+        return 'Fair';
+      case 3:
+        return 'Good';
+      case 4:
+        return 'Strong';
+      default:
+        return '';
+    }
+  };
+
+  const PassStrength = ({ strength }) => {
+    return (
+      <div
+        className={`password-strength-indicator ${getStrengthClass(strength)}`}
+      >
+        {strength && <span>{`Password Strength: ${strength}`}</span>}
+      </div>
+    );
+  };
+
+  const getStrengthClass = (strength) => {
+    switch (strength) {
+      case 'Weak':
+        return 'weak';
+      case 'Fair':
+        return 'fair';
+      case 'Good':
+        return 'good';
+      case 'Strong':
+        return 'strong';
+      default:
+        return '';
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
-        toast.error("Invalid email format");
-        return;
-      }
+      toast.error('Invalid email format');
+      return;
+    }
 
-    if (authMode === "signup" && password !== confirmPassword) {
-      setPasswordError("Passwords do not match");
+    if (authMode === 'signup' && password !== confirmPassword) {
+      setPasswordError('Passwords do not match');
       return;
     } else {
-      setPasswordError("");
+      setPasswordError('');
     }
 
     try {
@@ -57,19 +101,19 @@ const Register = () => {
       const url = `${tssurl}/auth/Signup`;
 
       const response = await axios.post(url, formData);
-      if (response.status === 201 && authMode === "signup") {
-        setName("");
-        setEmail("");
-        setPassword("");
-        setMobileNo("");
-        setConfirmPassword("");
-        toast.success("Email Verification Sent");
-        navigate("/");
+      if (response.status === 201 && authMode === 'signup') {
+        setName('');
+        setEmail('');
+        setPassword('');
+        setMobileNo('');
+        setConfirmPassword('');
+        toast.success('Email Verification Sent');
+        navigate('/');
       } else {
-        toast.error("Operation Unsuccessful", response.data.message);
+        toast.error('Operation Unsuccessful', response.data.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Error occurred");
+      toast.error(error.response?.data?.message || 'Error occurred');
     }
   };
 
@@ -89,7 +133,7 @@ const Register = () => {
           </Form.Group>
           <div className="pt-2" />
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label>Email Address</Form.Label>
             <Form.Control
               type="email"
               placeholder="Email Address"
@@ -100,7 +144,7 @@ const Register = () => {
           </Form.Group>
           <div className="pt-2" />
           <Form.Group controlId="formBasicMobileNo">
-            <Form.Label>Mobile No.</Form.Label>
+            <Form.Label>Phone No.</Form.Label>
             <Form.Control
               type="text"
               placeholder="Mobile Number"
@@ -110,35 +154,50 @@ const Register = () => {
             />
           </Form.Group>
           <div className="pt-2" />
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
+          <Form.Label>Password</Form.Label>
+          <InputGroup controlId="formBasicPassword">
             <Form.Control
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                handlePasswordStrength(e);
+                setPassword(e.target.value);
+              }}
               required
             />
-          </Form.Group>
+            <InputGroup.Text
+              className="password-toggle-icon"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </InputGroup.Text>
+          </InputGroup>
           <small className="password-validation-message text-muted">
-            {getPasswordValidationMessage()}
+            <PassStrength strength={passwordStrength} />
           </small>
           <div className="pt-2" />
-          <Form.Group controlId="formBasicConfirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
+          <Form.Label>Confirm Password</Form.Label>
+          <InputGroup controlId="formBasicConfirmPassword">
             <Form.Control
-              type="password"
+              type={showConfirmPassword ? 'text' : 'password'}
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={handlePasswordChange}
               required
             />
-          </Form.Group>
+            <InputGroup.Text
+              className="password-toggle-icon"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            </InputGroup.Text>
+          </InputGroup>
           <div
             className={`password-validation-message ${
-              passwordError === "Passwords match"
-                ? "text-success"
-                : "text-danger"
+              passwordError === 'Passwords match'
+                ? 'text-success'
+                : 'text-danger'
             }`}
           >
             {passwordError}

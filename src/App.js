@@ -1,17 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './assets/css/index.css';
+import Header from './components/common/Header';
+import Footer from './components/common/Footer';
 import HomePage from './pages/HomePage';
-import CartPage from './pages/CartPage';
 import ProductPage from './pages/ProductsPage';
 import ProductDetailsPage from './pages/ProductDetailsPage';
-import CatalogPage from './pages/CatalogPage';
-import LooksPage from './pages/LooksPage';
 import ProfilePage from './pages/ProfilePage';
 import ChangePassword from './pages/ChangePassword';
 import WishlistPage from './pages/WishlistPage';
+import CartPage from './pages/CartPage';
+import CatalogPage from './pages/CatalogPage';
+import LooksPage from './pages/LooksPage';
 import ErrorPage from './pages/ErrorPage';
-import Header from './components/common/Header';
-import Footer from './components/common/Footer';
 
 const App = () => {
   return (
@@ -19,14 +19,14 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/cart/carts" element={<CartPage />} />
         <Route path="/products" element={<ProductPage />} />
         <Route path="/productDetails/:pid" element={<ProductDetailsPage />} />
-        <Route path="/catalog/looks/:catalogId" element={<LooksPage />} />
-        <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/changePassword" element={<ChangePassword />}></Route>
+        <Route path="/changePassword" element={<ChangePassword />} />
         <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/cart/carts" element={<CartPage />} />
+        <Route path="/catalog" element={<CatalogPage />} />
+        <Route path="/catalog/looks/:catalogId" element={<LooksPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />

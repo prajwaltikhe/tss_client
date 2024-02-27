@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
+import { Button, Form, Row, Col, Modal, InputGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { FaUser } from 'react-icons/fa';
+import { FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import tssurl from '../../port';
 import GoogleAuth from './GoogleAuth';
@@ -14,6 +14,7 @@ const Login = ({ data }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [forgetPasswordModal, setForgetPasswordModal] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
@@ -106,7 +107,7 @@ const Login = ({ data }) => {
             <Modal.Body className="pb-0 mb-0">
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formBasicEmail">
-                  <Form.Label>Email address</Form.Label>
+                  <Form.Label>Email Address</Form.Label>
                   <Form.Control
                     type="email"
                     placeholder="name@example.com"
@@ -116,24 +117,29 @@ const Login = ({ data }) => {
                   />
                 </Form.Group>
                 <div className="pt-2" />
-                <Form.Group controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
+                <Form.Label>Password</Form.Label>
+                <InputGroup controlId="formBasicPassword">
                   <Form.Control
-                    type="password"
-                    placeholder="Password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
-                </Form.Group>
-                <p className="text-center mt-2">
-                  <Form.Text
-                    style={{ cursor: 'pointer', fontWeight: '700' }}
-                    onClick={handleForgetPasswordModalShow}
+                  <InputGroup.Text
+                    className="password-toggle-icon"
+                    onClick={() => setShowPassword(!showPassword)}
                   >
-                    Forgot Password?
-                  </Form.Text>
-                </p>
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </InputGroup.Text>
+                </InputGroup>
+                <Form.Text
+                  className="flex my-3"
+                  style={{ cursor: 'pointer' }}
+                  onClick={handleForgetPasswordModalShow}
+                >
+                  <strong>Forgot Password?</strong>
+                </Form.Text>
               </Form>
             </Modal.Body>
             <Modal.Footer className="flex">
@@ -178,7 +184,7 @@ const Login = ({ data }) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" type="submit">
+          <Button variant="dark" type="submit">
             Reset Password
           </Button>
         </Modal.Footer>

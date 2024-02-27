@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Row } from 'react-bootstrap'; // Updated import
+import { useEffect, useState } from 'react';
+import { Container, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { LooksData } from '../components/catalog/Looks';
 import tssurl from '../port';
+import axios from 'axios';
 
 const LooksPage = () => {
   const { catalogId } = useParams();
@@ -12,9 +13,8 @@ const LooksPage = () => {
     const fetchData = async () => {
       try {
         if (catalogId) {
-          const res = await fetch(`${tssurl}/catalog/looks/${catalogId}`);
-          const looksData = await res.json();
-          setLooksData(looksData);
+          const res = await axios.get(`${tssurl}/catalog/looks/${catalogId}`);
+          setLooksData(res.data);
         }
       } catch (error) {
         console.error('Error fetching looks data', error);

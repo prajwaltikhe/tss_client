@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { Card, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FaCircle, FaRegHeart, FaHeart } from 'react-icons/fa';
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 import tssurl from '../../port';
 
 const Product = ({ product }) => {
@@ -67,7 +67,7 @@ const Product = ({ product }) => {
         )}
 
         <Link to={`/productDetails/${product.pid}`}>
-          <Card.Img src={thumbImgUrl} variant="top" fluid />
+          <Card.Img src={thumbImgUrl} variant="top" fluid="true" />
           {product.rating > '4.5' && <Badge bg="light">TOP RATED</Badge>}
         </Link>
       </div>

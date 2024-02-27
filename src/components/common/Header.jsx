@@ -44,7 +44,7 @@ const Header = () => {
     toast.success('Sign Out Successful');
   };
 
-  const getDefaultActiveKey = () => {
+  const activeKey = () => {
     const mainMenu = head?.find((menu) => menu?.Mname === 'WOMEN');
     return mainMenu ? mainMenu.MLink : '';
   };
@@ -88,17 +88,17 @@ const Header = () => {
       <Container className="navbar-tabs">
         {head && (
           <Tabs
-            getDefaultActiveKey={getDefaultActiveKey}
+            defaultActiveKey={activeKey}
             id="controlled-tab"
             className="mt-1"
           >
             {head.map((menu) => (
               <Tab key={menu.MLink} eventKey={menu.MLink} title={menu.Mname}>
                 <Nav className="flex-row">
-                  {menu?.nav_link?.map((item) => (
+                  {menu?.nav_link?.map((item, index) => (
                     <Nav.Link
-                      key={item?.link}
-                      href={`/${item?.link}`}
+                      key={`${item?.link}-${index}`}
+                      href="/products"
                       style={{ fontSize: '1.1rem' }}
                     >
                       {item.name}

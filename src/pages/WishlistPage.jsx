@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { FaHeart, FaTrash } from "react-icons/fa";
-import { Row, Col, Card, Container, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import tssurl from "../port";
+import { useState, useEffect } from 'react';
+import { FaHeart, FaTrash } from 'react-icons/fa';
+import { Row, Col, Card, Container, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import tssurl from '../port';
 
 const WishlistPage = () => {
   const [likedProducts, setLikedProducts] = useState([]);
-  const MID = localStorage.getItem("MID");
+  const MID = localStorage.getItem('MID');
 
   useEffect(() => {
     const fetchLikedProducts = async () => {
@@ -28,7 +28,7 @@ const WishlistPage = () => {
           productDetails.map((product) => ({ ...product, hovered: false }))
         );
       } catch (error) {
-        console.error("Error fetching liked products:", error);
+        console.error('Error fetching liked products:', error);
       }
     };
 
@@ -65,17 +65,17 @@ const WishlistPage = () => {
           prevProducts.filter((product) => product.pid !== productId)
         );
       } else {
-        console.error("Failed to delete product");
+        console.error('Failed to delete product');
       }
       window.location.reload();
     } catch (error) {
-      console.error("Error deleting product:", error);
+      console.error('Error deleting product:', error);
     }
   };
 
   return (
-    <>
-      <div className="text-center fw-bold fs-2">Your Wishlist</div>
+    <Container fluid>
+      <div className="text-center fw-bold fs-3 my-3">Your Wishlist</div>
       {likedProducts.length === 0 ? (
         <div className="text-center">
           <p className="fs-3">is empty.....</p>
@@ -89,7 +89,7 @@ const WishlistPage = () => {
             {likedProducts.map((product, index) => (
               <Col key={product._id} xs={12} sm={6} md={4} lg={3}>
                 <Card
-                  className="my-3 wishlist-card "
+                  className="my-3 wishlist-card"
                   onMouseEnter={() => handleMouseEnter(index)}
                   onMouseLeave={() => handleMouseLeave(index)}
                 >
@@ -122,7 +122,6 @@ const WishlistPage = () => {
                       </div>
                     )}
                   </div>
-                  {/* <Link to={`/productDetails/${product.pid}`}> */}
                   <Card.Body className="p-0 mt-1">
                     <Card.Title as="div">
                       <strong className="text-dark mb-0 product-title">
@@ -133,14 +132,13 @@ const WishlistPage = () => {
                       <p className="mb-0 price">${product.unit_price}</p>
                     </Card.Text>
                   </Card.Body>
-                  {/* </Link> */}
                 </Card>
               </Col>
             ))}
           </Row>
         </Container>
       )}
-    </>
+    </Container>
   );
 };
 
