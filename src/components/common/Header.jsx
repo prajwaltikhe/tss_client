@@ -4,7 +4,7 @@ import { NavDropdown, Tabs, Tab } from 'react-bootstrap';
 import { FaShoppingCart, FaStar, FaSearch, FaUser } from 'react-icons/fa';
 import axios from 'axios';
 import tssurl from '../../port';
-import Login from '../auth/Login';
+import Login from '../auth/login';
 import { toast } from 'react-toastify';
 
 const Header = () => {

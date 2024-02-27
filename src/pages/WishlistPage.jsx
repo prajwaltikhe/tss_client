@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import { FaHeart, FaTrash } from 'react-icons/fa';
-import { Row, Col, Card, Container, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import tssurl from '../port';
+import React, { useState, useEffect } from "react";
+import { FaHeart, FaTrash } from "react-icons/fa";
+import { Row, Col, Card, Container, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import tssurl from "../port";
+import { toast } from "react-toastify";
 
 const WishlistPage = () => {
   const [likedProducts, setLikedProducts] = useState([]);
@@ -69,7 +70,26 @@ const WishlistPage = () => {
       }
       window.location.reload();
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error("Error deleting product:", error);
+    }
+  };
+  const handleAddtoCart = async (productID) => {
+    try {
+      const cartResponse = await axios.get(`${tssurl}/cart/carts/${MID}`);
+      const cartProducts = cartResponse.data.cart.map((item) => item.pid);
+
+      if (cartProducts.includes(productID)) {
+        toast.error("Product already exists in the cart");
+      } else {
+        const response = await axios.post(`${tssurl}/cart/carts`, {
+          mid: MID,
+          pid: productID,
+        });
+        toast.success("Product added to cart");
+        handleDeleteProduct(productID);
+      }
+    } catch (error) {
+      console.error("Error :", error);
     }
   };
 
@@ -117,6 +137,7 @@ const WishlistPage = () => {
                       <div
                         className="add-to-cart"
                         disabled={product.quantity_pi === 0}
+                        onClick={() => handleAddtoCart(product.pid)}
                       >
                         Add to Cart
                       </div>

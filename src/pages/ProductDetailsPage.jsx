@@ -201,7 +201,7 @@ const ProductDetailsPage = () => {
         <ProductsSlider data={products} />
       </Row>
       <div className="py-4">
-        <Reviews />
+        <Reviews productID={product.pid} />
       </div>
     </Container>
   );
