@@ -7,25 +7,24 @@ import {
   Modal,
   Form,
   Card,
-} from 'react-bootstrap';
-import axios from 'axios';
-import {
-  FaChevronLeft,
-  FaChevronRight,
-  FaRegCheckCircle,
-} from 'react-icons/fa';
-import Slider from 'react-slick';
-import ReactStars from 'react-stars';
-import Ratings from '../common/Ratings';
-import tssurl from '../../port';
+} from "react-bootstrap";
+import axios from "axios";
+import { FaRegCheckCircle } from "react-icons/fa";
+import ReactStars from "react-stars";
+import Ratings from "../common/Ratings";
+import tssurl from "../../port";
 
 const Reviews = ({ productID }) => {
   const [reviews, setReviews] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [reviewTitle, setReviewTitle] = useState('');
-  const [reviewDesc, setReviewDesc] = useState('');
+  const [reviewTitle, setReviewTitle] = useState("");
+  const [reviewDesc, setReviewDesc] = useState("");
   const [rating, setRating] = useState(0);
   const [recommendProduct, setRecommendProduct] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [reviewsPerPage] = useState(2);
+  const [averageRating, setAverageRating] = useState(0);
+  const [totalReviews, setTotalReviews] = useState(0);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -34,18 +33,31 @@ const Reviews = ({ productID }) => {
           `${tssurl}/review/reviews/product/${productID}`
         );
         setReviews(response.data);
+        const totalRatings = response.data.reduce(
+          (total, review) => total + review.rating,
+          0
+        );
+        const avgRating =
+          totalRatings / (response.data.length > 0 ? response.data.length : 1);
+        setAverageRating(avgRating);
+        setTotalReviews(response.data.length);
       } catch (error) {
-        console.error('Error fetching reviews:', error);
+        console.error("Error fetching reviews:", error);
       }
     };
 
     fetchReviews();
   }, [productID]);
 
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const handleAddReview = async () => {
     try {
       const reviewData = {
-        mid: localStorage.getItem('MID'),
+        mid: localStorage.getItem("MID"),
         pid: productID,
         product_name: reviewTitle,
         rating: rating,
@@ -63,56 +75,66 @@ const Reviews = ({ productID }) => {
       };
 
       const response = await axios.post(`${tssurl}/review/reviews`, reviewData);
-      console.log('Review added successfully:', response.data);
+      console.log("Review added successfully:", response.data);
 
-      setReviewTitle('');
-      setReviewDesc('');
+      setReviewTitle("");
+      setReviewDesc("");
       setRating(0);
       setRecommendProduct(false);
 
       setShowModal(false);
     } catch (error) {
-      console.error('Error adding review:', error);
+      console.error("Error adding review:", error);
     }
   };
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 2,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    centerMode: false,
-    centerPadding: '60px',
-    prevArrow: (
-      <div className="custom-prev-arrow">
-        <button className="rounded-pill btn btn-light home-slide-btn">
-          <FaChevronLeft />
-        </button>
+  const renderReviews = () => {
+    return currentReviews.map((review) => (
+      <div key={review._id}>
+        <Col key={review._id} md={12}>
+          <Row>
+            <Col md={4}>
+              <h5 className="fw-bold">{review.username}</h5>
+              <p>
+                <b>Location:</b> {review.location}
+              </p>
+              <p>
+                <b>Age:</b> {review.Age}
+              </p>
+              <p>
+                <b>Height:</b> {review.Height}'
+              </p>
+              <p>
+                <b>Body type:</b> {review.BodyType}
+              </p>
+            </Col>
+            <Col md={8}>
+              <div>
+                <Ratings value={review.rating} />
+              </div>
+              <h5>{review.product_name}</h5>
+              <p>{review.review}</p>
+              <p>
+                <b>Fit Purchased:</b> {review.FitPurchased}
+              </p>
+              <p>
+                <b>Size Purchased:</b> {review.SizePurchased}
+              </p>
+              <p>
+                <b>Size Normally Worn:</b> {review.SizeWorn}
+              </p>
+              {review.recommendProduct && (
+                <p>
+                  <span>
+                    <b>Yes</b> I recommend this product
+                  </span>
+                </p>
+              )}
+            </Col>
+          </Row>
+        </Col>
       </div>
-    ),
-    nextArrow: (
-      <div className="custom-next-arrow">
-        <button className="rounded-pill btn btn-light home-slide-btn">
-          <FaChevronRight />
-        </button>
-      </div>
-    ),
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          centerMode: false,
-        },
-      },
-    ],
-    customPaging: function (i) {
-      return <div>{i + 1}</div>;
-    },
+    ));
   };
 
   return (
@@ -153,7 +175,7 @@ const Reviews = ({ productID }) => {
                   value={rating}
                   onChange={(newValue) => setRating(newValue)}
                   size={24}
-                  color2={'#ffd700'}
+                  color2={"#ffd700"}
                 />
               </Form.Group>
               <Form.Group controlId="recommendProduct">
@@ -179,9 +201,11 @@ const Reviews = ({ productID }) => {
       <div className="review-body">
         <Row>
           <Col md={4} sm={6} className="column column-stars">
-            <div className="stars-info row1">4.6 stars | 1283 Reviews</div>
+            <div className="stars-info row1">
+              {averageRating.toFixed(1)} stars | {totalReviews} Reviews
+            </div>
             <div className="stars-rating row2">
-              <Ratings value={5} />
+              <Ratings value={averageRating} />
             </div>
           </Col>
 
@@ -199,66 +223,40 @@ const Reviews = ({ productID }) => {
 
       <div className="text-center">Images</div>
       <div className="review-head">
-        <div> # Reviews</div>
-        <div className="d-flex ">
+        <div className="pagination absolute left-0 right-0 flex ">
+          <button
+            className={`px-2 border-1 rounded-md ${
+              currentPage === 0
+                ? "bg-[#DDDEF9] text-gray-500 cursor-default"
+                : "bg-white text-gray-700 "
+            }`}
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            {"<"} Prev
+          </button>
+          <span className="p-2">{`Review ${2 * currentPage} of ${2 *
+            Math.ceil(reviews.length / reviewsPerPage)}`}</span>
+          <button
+            className={`px-2 border-1 rounded-md ${
+              currentPage === indexOfLastReview - 1
+                ? "bg-[#DDDEF9] text-gray-500 cursor-default"
+                : "bg-white text-gray-700"
+            }`}
+            onClick={() => paginate(currentPage + 1)}
+            disabled={indexOfLastReview >= reviews.length}
+          >
+            Next {">"}
+          </button>
+        </div>
+        {/* <div className="d-flex ">
           <p>1 of 15</p>
           <p>Sort</p>
           <Button>Recent</Button>
-        </div>
+        </div> */}
       </div>
 
-      <Slider {...settings}>
-        {reviews.map((review) => (
-          <div key={review._id}>
-            <Col key={review._id} md={12}>
-              <Card>
-                <Card.Body>
-                  <Row>
-                    <Col md={4}>
-                      <h5 className="fw-bold">{review.username}</h5>
-                      <p>
-                        <b>Location:</b> {review.location}
-                      </p>
-                      <p>
-                        <b>Age:</b> {review.Age}
-                      </p>
-                      <p>
-                        <b>Height:</b> {review.Height}'
-                      </p>
-                      <p>
-                        <b>Body type:</b> {review.BodyType}
-                      </p>
-                    </Col>
-                    <Col md={8}>
-                      <div>
-                        <Ratings value={review.rating} />
-                      </div>
-                      <h5>{review.product_name}</h5>
-                      <p>{review.review}</p>
-                      <p>
-                        <b>Fit Purchased:</b> {review.FitPurchased}
-                      </p>
-                      <p>
-                        <b>Size Purchased:</b> {review.SizePurchased}
-                      </p>
-                      <p>
-                        <b>Size Normally Worn:</b> {review.SizeWorn}
-                      </p>
-                      {review.recommendProduct && (
-                        <p>
-                          <span>
-                            <b>Yes</b> I recommend this product
-                          </span>
-                        </p>
-                      )}
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
-            </Col>
-          </div>
-        ))}
-      </Slider>
+      {renderReviews()}
     </Container>
   );
 };

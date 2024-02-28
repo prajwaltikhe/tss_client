@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
-import { Container, Row, Col, Button, Tabs, Tab } from 'react-bootstrap';
-import { FaCircle, FaPlus, FaMinus } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import { useParams, Link } from 'react-router-dom';
-import Ratings from '../components/common/Ratings';
-import Reviews from '../components/shop/Reviews';
-import axios from 'axios';
-import tssurl from '../port';
-import ProductsSlider from '../components/shop/ProductSlider';
-import ProductGallery from '../components/shop/ProductGallery';
-import { toast } from 'react-toastify';
+import { useState, useEffect } from "react";
+import { Container, Row, Col, Button, Tabs, Tab } from "react-bootstrap";
+import { FaCircle, FaPlus, FaMinus, FaHeart } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import Ratings from "../components/common/Ratings";
+import Reviews from "../components/shop/Reviews";
+import axios from "axios";
+import tssurl from "../port";
+import ProductsSlider from "../components/shop/ProductSlider";
+import ProductGallery from "../components/shop/ProductGallery";
+import { toast } from "react-toastify";
 
 const ProductDetailsPage = () => {
   const { pid: productId } = useParams();
@@ -28,7 +28,7 @@ const ProductDetailsPage = () => {
         );
         setProduct(data);
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error("Error fetching product:", error);
       } finally {
         setLoading(false);
       }
@@ -37,7 +37,7 @@ const ProductDetailsPage = () => {
         const response = await axios.get(`${tssurl}/productcat/products`);
         setProducts(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -59,7 +59,7 @@ const ProductDetailsPage = () => {
       return newQty;
     });
   };
-  const mid = localStorage.getItem('MID');
+  const mid = localStorage.getItem("MID");
 
   const addToCartHandler = async () => {
     const data = {
@@ -71,33 +71,33 @@ const ProductDetailsPage = () => {
       const isProductInCart = cart.some((item) => item.user.pid === productId);
 
       if (isProductInCart) {
-        toast('Product is already in the cart');
+        toast("Product is already in the cart");
         return;
       }
 
       const response = await axios.post(`${tssurl}/cart/carts/${mid}`, data, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (response.status !== 200) {
         const errorMessage = response.data
           ? response.data.error
-          : 'Unknown error';
+          : "Unknown error";
         throw new Error(
           `Failed to add item to cart. Server response: ${errorMessage}`
         );
       }
 
-      toast.success('Item added to cart successfully!');
+      toast.success("Item added to cart successfully!");
 
-      console.log('Add to cart successful:', response);
+      console.log("Add to cart successful:", response);
       const updatedCart = [...cart, { ...product, qty }];
       setCart(updatedCart);
-      navigate('/cart/carts');
+      navigate("/cart/carts");
     } catch (error) {
-      console.error('Error adding to cart:', error.message);
+      console.error("Error adding to cart:", error.message);
     }
   };
 
@@ -115,7 +115,22 @@ const ProductDetailsPage = () => {
       </p>
       <Row className="product-details">
         <Col md={6}>
-          <ProductGallery product={product} />
+          <div>
+            <FaHeart
+              size={24}
+              style={{
+                position: "relative",
+                top: "30px",
+                right: "-30px",
+                cursor: "pointer",
+                color: "red",
+                zIndex: "2",
+              }}
+            />
+          </div>
+          <div>
+            <ProductGallery product={product} />
+          </div>
         </Col>
         <Col md={6}>
           <h3>{product.product_name}</h3>
@@ -128,14 +143,14 @@ const ProductDetailsPage = () => {
             </Col>
           </Row>
           <h6 className="mt-2">
-            Color:{' '}
+            Color:{" "}
             <span>
               {colors.map((color, index) => (
                 <FaCircle
                   key={index}
                   style={{
                     color: index === color.value && color.value,
-                    cursor: 'pointer',
+                    cursor: "pointer",
                   }}
                 />
               ))}
@@ -186,26 +201,26 @@ const ProductDetailsPage = () => {
             fill
           >
             <Tab eventKey="details" title="Details">
-              <span style={{ textAlign: 'justify' }}>
+              <span style={{ textAlign: "justify" }}>
                 {parseHtmlToText(product_detail)}
               </span>
             </Tab>
             <Tab eventKey="fabric" title="Fabric">
-              <span style={{ textAlign: 'justify' }}>
+              <span style={{ textAlign: "justify" }}>
                 {fabricList.map((fabric, index) => (
                   <li key={index}>{fabric}</li>
                 ))}
               </span>
             </Tab>
             <Tab eventKey="fit" title="Fit">
-              <span style={{ textAlign: 'justify' }}>
+              <span style={{ textAlign: "justify" }}>
                 {fitOptions.map((fit, index) => (
                   <li key={index}>{fit}</li>
                 ))}
               </span>
             </Tab>
             <Tab eventKey="about" title="About">
-              <span style={{ textAlign: 'justify' }}>
+              <span style={{ textAlign: "justify" }}>
                 {parseHtmlToText(product.about)}
               </span>
             </Tab>
@@ -225,14 +240,14 @@ const ProductDetailsPage = () => {
 
 const parseHtmlToList = (htmlString) => {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlString, 'text/html');
-  const fitListItems = doc.querySelectorAll('ol li');
+  const doc = parser.parseFromString(htmlString, "text/html");
+  const fitListItems = doc.querySelectorAll("ol li");
   return Array.from(fitListItems).map((item) => item.textContent.trim());
 };
 
 const parseHtmlToText = (htmlString) => {
-  const doc = new DOMParser().parseFromString(htmlString, 'text/html');
-  return doc.body.textContent || '';
+  const doc = new DOMParser().parseFromString(htmlString, "text/html");
+  return doc.body.textContent || "";
 };
 
 export default ProductDetailsPage;
