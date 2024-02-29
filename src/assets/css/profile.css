@@ -11,8 +11,8 @@
 }
 
 .sidebar {
-  padding-top: 10px;
-  width: 14rem;
+  padding: 10px;
+  width: 230px;
 
   @media (max-width: 768px) {
     display: none;
@@ -94,15 +94,14 @@ select:focus {
   border-bottom-color: blue;
 }
 
-.profile-options {
+/* .profile-options {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 
 .profile-picture {
   margin-bottom: 10px;
-  width: 75%;
 }
 
 .upload-new-picture,
@@ -111,7 +110,7 @@ select:focus {
 }
 .rectangle-box {
   display: flex;
-  width: 175px;
+  width: 200px;
   height: 100px;
   border: 1px solid grey;
   font-weight: bold;
@@ -132,7 +131,7 @@ select:focus {
   display: flex;
   flex-direction: column;
   width: 300px;
-  margin: 30px;
+  margin: 25px;
 }
 
 .add-card .card-title {
@@ -181,10 +180,6 @@ select:focus {
   width: 300px;
 }
 
-:root {
-  --swiper-navigation-size: 2rem;
-}
-
 .update-button {
   background-color: gray;
   color: #fff;
@@ -197,4 +192,21 @@ select:focus {
 
 .update-button:hover {
   background-color: black;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.card-button {
+  color: grey;
+  padding: 5px 15px;
+  border: 1px solid grey;
+  background: white;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: auto; /* Center button vertically */
+  margin-bottom: 25px;
 }

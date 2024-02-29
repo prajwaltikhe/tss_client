@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { FaHeart, FaTrash } from 'react-icons/fa';
 import { Row, Col, Card, Container, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import tssurl from '../port';
 
 const WishlistPage = () => {
+  const navigate=useNavigate();
   const [likedProducts, setLikedProducts] = useState([]);
   const MID = localStorage.getItem('MID');
 
@@ -79,9 +80,9 @@ const WishlistPage = () => {
       const cartResponse = await axios.get(`${tssurl}/cart/carts/${MID}`);
       const cartProducts = cartResponse.data.cart.map((item) => item.pid);
 
-      if (cartProducts.includes(productID)) {
-        toast.error('Product already exists in the cart');
-      } else {
+      // if (cartProducts.includes(productID)) {
+      //   // toast.error('Product already exists in the cart');
+      // } else {
         const response = await axios.post(`${tssurl}/cart/carts`, {
           mid: MID,
           pid: productID,
@@ -90,9 +91,10 @@ const WishlistPage = () => {
         if (response.status === 200) {
           toast.success('Product added to cart');
           handleDeleteProduct(productID);
+          navigate('/cart/carts');
         } else {
           console.error('Failed to add product to cart');
-        }
+        // }
       }
     } catch (error) {
       console.error('Error :', error);
