@@ -69,12 +69,6 @@ const ProductDetailsPage = () => {
     };
 
     try {
-      const isProductInCart = cart.some((item) => item.user.pid === productId);
-
-      if (isProductInCart) {
-        toast('Product is already in the cart');
-        return;
-      }
 
       const response = await axios.post(`${tssurl}/cart/carts`, data, {
         headers: {
