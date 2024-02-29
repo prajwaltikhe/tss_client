@@ -7,22 +7,22 @@ import {
   Modal,
   Form,
   Card,
-} from "react-bootstrap";
-import axios from "axios";
-import { FaRegCheckCircle } from "react-icons/fa";
-import ReactStars from "react-stars";
-import Ratings from "../common/Ratings";
-import tssurl from "../../port";
+} from 'react-bootstrap';
+import axios from 'axios';
+import { FaRegCheckCircle } from 'react-icons/fa';
+import ReactStars from 'react-stars';
+import Ratings from '../common/Ratings';
+import tssurl from '../../port';
 
 const Reviews = ({ productID }) => {
   const [reviews, setReviews] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [reviewTitle, setReviewTitle] = useState("");
-  const [reviewDesc, setReviewDesc] = useState("");
+  const [reviewTitle, setReviewTitle] = useState('');
+  const [reviewDesc, setReviewDesc] = useState('');
   const [rating, setRating] = useState(0);
   const [recommendProduct, setRecommendProduct] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [reviewsPerPage] = useState(2);
+  const [reviewsPerPage] = useState(4);
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
 
@@ -42,7 +42,7 @@ const Reviews = ({ productID }) => {
         setAverageRating(avgRating);
         setTotalReviews(response.data.length);
       } catch (error) {
-        console.error("Error fetching reviews:", error);
+        console.error('Error fetching reviews:', error);
       }
     };
 
@@ -57,7 +57,7 @@ const Reviews = ({ productID }) => {
   const handleAddReview = async () => {
     try {
       const reviewData = {
-        mid: localStorage.getItem("MID"),
+        mid: localStorage.getItem('MID'),
         pid: productID,
         product_name: reviewTitle,
         rating: rating,
@@ -75,73 +75,87 @@ const Reviews = ({ productID }) => {
       };
 
       const response = await axios.post(`${tssurl}/review/reviews`, reviewData);
-      console.log("Review added successfully:", response.data);
+      console.log('Review added successfully:', response.data);
 
-      setReviewTitle("");
-      setReviewDesc("");
+      setReviewTitle('');
+      setReviewDesc('');
       setRating(0);
       setRecommendProduct(false);
 
       setShowModal(false);
     } catch (error) {
-      console.error("Error adding review:", error);
+      console.error('Error adding review:', error);
     }
   };
 
   const renderReviews = () => {
-    return currentReviews.map((review) => (
-      <div key={review._id}>
-        <Col key={review._id} md={12}>
-          <Row>
-            <Col md={4}>
-              <h5 className="fw-bold">{review.username}</h5>
-              <p>
-                <b>Location:</b> {review.location}
-              </p>
-              <p>
-                <b>Age:</b> {review.Age}
-              </p>
-              <p>
-                <b>Height:</b> {review.Height}'
-              </p>
-              <p>
-                <b>Body type:</b> {review.BodyType}
-              </p>
-            </Col>
-            <Col md={8}>
-              <div>
-                <Ratings value={review.rating} />
-              </div>
-              <h5>{review.product_name}</h5>
-              <p>{review.review}</p>
-              <p>
-                <b>Fit Purchased:</b> {review.FitPurchased}
-              </p>
-              <p>
-                <b>Size Purchased:</b> {review.SizePurchased}
-              </p>
-              <p>
-                <b>Size Normally Worn:</b> {review.SizeWorn}
-              </p>
-              {review.recommendProduct && (
-                <p>
-                  <span>
-                    <b>Yes</b> I recommend this product
-                  </span>
-                </p>
-              )}
-            </Col>
+    const numCardsPerRow = 2;
+    const numTotalCards = currentReviews.length;
+    const numRows = Math.ceil(numTotalCards / numCardsPerRow);
+
+    const rows = Array.from({ length: numRows }, (_, rowIndex) => {
+      const startIndex = rowIndex * numCardsPerRow;
+      const endIndex = startIndex + numCardsPerRow;
+      const rowReviews = currentReviews.slice(startIndex, endIndex);
+
+      return (
+        <Container className="reviews-cards">
+          <Row key={rowIndex}>
+            {rowReviews.map((review, colIndex) => (
+              <Col key={colIndex} md={6} lg={6}>
+                <Card className="px-4 py-3 gap-3 my-2">
+                  <Row>
+                    <Col md={6} className="d-flex flex-column">
+                      <h5 className="fw-bold mb-0">{review.username}</h5>
+                      <span className="mt-1">
+                        <strong>Location:</strong> {review.location}
+                      </span>
+                      <span className="mt-1">
+                        <strong>Age:</strong> {review.Age}
+                      </span>
+                      <span className="mt-1">
+                        <strong>Height:</strong> {review.Height}'
+                      </span>
+                      <span className="mt-1">
+                        <strong>Body type:</strong> {review.BodyType}
+                      </span>
+                    </Col>
+                    <Col md={6} className="d-flex flex-column">
+                      <Ratings value={review.rating} />
+                      <h5 className="mt-1 mb-0">{review.product_name}</h5>
+                      <span className="mt-1">{review.review}</span>
+                      <span className="mt-1">
+                        <strong>Fit Purchased:</strong> {review.FitPurchased}
+                      </span>
+                      <span className="mt-1">
+                        <strong>Size Purchased:</strong> {review.SizePurchased}
+                      </span>
+                      <span className="mt-1">
+                        <strong>Size Normally Worn:</strong> {review.SizeWorn}
+                      </span>
+                      {review.recommendProduct && (
+                        <span className="mt-1">
+                          <strong>Yes</strong> I recommend this product
+                        </span>
+                      )}
+                    </Col>
+                  </Row>
+                </Card>
+              </Col>
+            ))}
           </Row>
-        </Col>
-      </div>
-    ));
+        </Container>
+      );
+    });
+
+    return rows;
   };
 
   return (
     <Container>
-      <div className="d-flex justify-content-between my-3">
+      <div className="d-flex justify-content-between my-3 review-text">
         <h5 className="fw-bold">Ratings and Reviews</h5>
-        <Button variant="primary" onClick={() => setShowModal(true)}>
+        <Button variant="dark" onClick={() => setShowModal(true)}>
           Add Review
         </Button>
 
@@ -175,7 +189,7 @@ const Reviews = ({ productID }) => {
                   value={rating}
                   onChange={(newValue) => setRating(newValue)}
                   size={24}
-                  color2={"#ffd700"}
+                  color2={'#ffd700'}
                 />
               </Form.Group>
               <Form.Group controlId="recommendProduct">
@@ -221,32 +235,34 @@ const Reviews = ({ productID }) => {
         </Row>
       </div>
 
-      <div className="text-center">Images</div>
-      <div className="review-head">
-        <div className="pagination absolute left-0 right-0 flex ">
+      {/* <div className="text-center">Images</div> */}
+      <div className="review-head justify-content-end mt-3 d-flex">
+        <div className="pagination absolute flex">
           <button
             className={`px-2 border-1 rounded-md ${
               currentPage === 0
-                ? "bg-[#DDDEF9] text-gray-500 cursor-default"
-                : "bg-white text-gray-700 "
+                ? 'bg-[#DDDEF9] text-gray-500 cursor-default'
+                : 'bg-white text-gray-700 '
             }`}
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
           >
-            {"<"} Prev
+            {'<'} Prev
           </button>
-          <span className="p-2">{`Review ${2 * currentPage} of ${2 *
-            Math.ceil(reviews.length / reviewsPerPage)}`}</span>
+          <span className="p-2">{`Review ${Math.min(
+            4 * currentPage,
+            currentReviews.length
+          )} of ${currentReviews.length}`}</span>
           <button
             className={`px-2 border-1 rounded-md ${
               currentPage === indexOfLastReview - 1
-                ? "bg-[#DDDEF9] text-gray-500 cursor-default"
-                : "bg-white text-gray-700"
+                ? 'bg-[#DDDEF9] text-gray-500 cursor-default'
+                : 'bg-white text-gray-700'
             }`}
             onClick={() => paginate(currentPage + 1)}
             disabled={indexOfLastReview >= reviews.length}
           >
-            Next {">"}
+            Next {'>'}
           </button>
         </div>
         {/* <div className="d-flex ">

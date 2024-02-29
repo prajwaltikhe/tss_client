@@ -156,6 +156,25 @@
   margin-left: -1.5rem;
 }
 
+/* Reviews  */
+.reviews-cards {
+  --bs-gutter-x: 0;
+}
+.reviews-cards .row {
+  margin-left: calc(var(--bs-gutter-x) * -1);
+  margin-right: calc(var(--bs-gutter-x) * -1);
+}
+
+.review-head {
+  margin-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-right: calc(var(--bs-gutter-x) * 0.5);
+}
+
+.review-text {
+  margin-left: calc(var(--bs-gutter-x) * -0.5);
+  margin-right: calc(var(--bs-gutter-x) * -0.5);
+}
+
 /* Mobile View */
 @media screen and (max-width: 768px) {
   .product {
