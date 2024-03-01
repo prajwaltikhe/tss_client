@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { Card, Modal, Button, Form, Row, Col } from 'react-bootstrap';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import tssurl from '../../port';
+import { useState } from "react";
+import { Card, Modal, Button, Form, Row, Col } from "react-bootstrap";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import tssurl from "../../port";
 
 const AddressCard = ({ address, onDelete, updateAddress }) => {
-  const mID = localStorage.getItem('MID');
-  const authToken = localStorage.getItem('authToken');
+  const mID = localStorage.getItem("MID");
+  const authToken = localStorage.getItem("authToken");
 
   const handleDelete = () => {
     onDelete(address._id, mID);
@@ -19,8 +19,10 @@ const AddressCard = ({ address, onDelete, updateAddress }) => {
     zipcode: address.zipcode,
     country: address.country,
     landmark: address.landmark,
+    addressSelected: address.addressSelected,
+    defaultAddress: address.defaultAddress,
   });
-
+  
   const handleEdit = () => {
     setShowModal(true);
   };
@@ -30,10 +32,12 @@ const AddressCard = ({ address, onDelete, updateAddress }) => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, checked } = e.target;
+    const newValue = e.target.type === 'checkbox' ? checked : value;
+    setFormData({ ...formData, [name]: newValue });
   };
-
+  
+  
   const handleSubmit = async (addressId) => {
     try {
       const response = await axios.put(
@@ -41,22 +45,22 @@ const AddressCard = ({ address, onDelete, updateAddress }) => {
         formData,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
           },
         }
       );
 
       if (response.status === 200) {
-        console.log('Address updated successfully');
+        console.log("Address updated successfully");
         updateAddress(addressId, formData);
         setShowModal(false);
         window.location.reload();
       } else {
-        console.error('Failed to update address:', response.statusText);
+        console.error("Failed to update address:", response.statusText);
       }
     } catch (error) {
-      console.error('Error updating address:', error);
+      console.error("Error updating address:", error);
     }
   };
 
@@ -68,7 +72,9 @@ const AddressCard = ({ address, onDelete, updateAddress }) => {
             <Card.Title>{address?.landmark}</Card.Title>
             <button className="card-button">Home</button>
           </div>
-          <p className="card-text1">Default</p>
+          <p className="card-text1">
+            {address.defaultAddress === true ? "Default" : null}
+          </p>
           <p className="card-text">
             {address?.landmark}, {address?.country}, {address?.zipcode}
           </p>
@@ -95,7 +101,7 @@ const AddressCard = ({ address, onDelete, updateAddress }) => {
             </Col>
             <Col md="6">
               <p className="custom-color w-100 text-decoration-none">
-                Address Selected
+                {address.addressSelected === true ? "Address Selected" : null}
               </p>
             </Col>
           </Row>
@@ -149,12 +155,25 @@ const AddressCard = ({ address, onDelete, updateAddress }) => {
               />
             </Form.Group>
             <Form.Group controlId="formDefault">
-              <Form.Check type="checkbox" label="Default" />
-            </Form.Group>
+            <Form.Check 
+              type="checkbox" 
+              label="Default" 
+              name="defaultAddress" 
+              checked={formData.defaultAddress}
+              onChange={handleChange}
+            />
+          </Form.Group>
 
-            <Form.Group controlId="formAddressSelected">
-              <Form.Check type="checkbox" label="Address Selected" />
-            </Form.Group>
+          <Form.Group controlId="formAddressSelected">
+            <Form.Check 
+              type="checkbox" 
+              label="Address Selected" 
+              name="addressSelected" 
+              checked={formData.addressSelected}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
           </Form>
         </Modal.Body>
         <Modal.Footer>

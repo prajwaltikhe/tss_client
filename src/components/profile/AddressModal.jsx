@@ -11,8 +11,8 @@ const AddAddressModal = ({
   const [landmark, setLandmark] = useState('');
   const [zipcode, setZipcode] = useState('');
   const [phoneNo, setPhoneNo] = useState('');
-  const [addressType, setAddressType] = useState('normal'); // Default to 'normal' address type
-  const [isSelected, setIsSelected] = useState(false); // Initialize isSelected state as false
+  const [defaultAddress, setDefaultAddress] = useState(false); // Default to 'normal' address type
+  const [addressSelected, setAddressSelected] = useState(false); // Initialize isSelected state as false
 
   console.log('hello');
   return (
@@ -64,34 +64,26 @@ const AddAddressModal = ({
 
           <Form.Group>
             <Form.Check
-              type="checkbox"
+              type="radio"
               label="Address Selected"
-              checked={isSelected}
-              onChange={(e) => setIsSelected(e.target.checked)}
+              checked={addressSelected}
+              onChange={(e) => setAddressSelected(true)}
             />
           </Form.Group>
 
           <Form.Group>
             <Form.Label>Address Type:</Form.Label>
             <div>
-              <Form.Check
-                inline
-                type="radio"
-                label="Default"
-                name="addressType"
-                value="default"
-                checked={addressType === 'default'}
-                onChange={() => setAddressType('default')}
-              />
-              <Form.Check
-                inline
-                type="radio"
-                label="Normal"
-                name="addressType"
-                value="normal"
-                checked={addressType === 'normal'}
-                onChange={() => setAddressType('normal')}
-              />
+            <Form.Check
+            inline
+            type="radio"
+            label="Default"
+            name="addressType"
+            value="default"
+            checked={defaultAddress}
+            onChange={() => setDefaultAddress(true)}
+          />
+
             </div>
           </Form.Group>
         </Form>
@@ -108,8 +100,8 @@ const AddAddressModal = ({
               landmark,
               zipcode,
               phoneNo,
-              addressType,
-              isSelected,
+              defaultAddress,
+              addressSelected,
             })
           }
         >
