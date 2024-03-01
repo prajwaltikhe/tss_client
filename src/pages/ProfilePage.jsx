@@ -25,7 +25,7 @@ const ProfilePage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`, // Include the authentication token
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(addressData),
       });
@@ -33,8 +33,7 @@ const ProfilePage = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("Address added successfully:", data);
-        setShowModal(false); // Close the modal after adding the address
-        // Optionally reload the page if needed
+        setShowModal(false); 
       } else {
         const errorMessage = await response.text();
         console.error("Failed to add address:", errorMessage);
@@ -49,7 +48,7 @@ const ProfilePage = () => {
   const [addresses, setAddresses] = useState([]);
   const addressesArray = Object.values(addresses);
   useEffect(() => {
-    // Fetch addresses when component mounts
+   
     fetchAddresses();
   }, []);
   const fetchAddresses = async () => {
@@ -84,7 +83,7 @@ const ProfilePage = () => {
 
       if (response.ok) {
         console.log("Address deleted successfully");
-        // Remove the deleted address card from the UI
+      
         setAddresses(addresses.filter((address) => address._id !== addressID));
         window.location.reload();
       } else {
@@ -114,7 +113,7 @@ const ProfilePage = () => {
 
   const [originalFormData, setOriginalFormData] = useState({});
   const [editMode, setEditMode] = useState(false);
-  //
+  
   const userId = localStorage.getItem("MID");
   useEffect(() => {
     fetch(`${tssurl}/auth/users/${userId}`)
@@ -152,25 +151,25 @@ const ProfilePage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // Make sure to replace 'your-api-endpoint' with your actual API endpoint for updating user data
+      
       const response = await fetch(`${tssurl}/auth/users/${userId}`, {
-        method: "PUT", // or 'PATCH' depending on your API
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          // Add any additional headers if required, such as authorization token
+          
         },
 
-        body: JSON.stringify(formDataToUpdate), // Convert form data to JSON string
+        body: JSON.stringify(formDataToUpdate),
       });
 
       if (response.ok) {
-        // Update was successful
+      
         console.log("Form data updated successfully");
-        setEditMode(false); // Exit edit mode after successful update
+        setEditMode(false); 
       } else {
-        // Update failed
+        
         console.error("Failed to update form data");
-        // Handle error as needed, e.g., display error message to user
+       
       }
     } catch (error) {
       console.error("Error updating form data:", error);
@@ -178,15 +177,14 @@ const ProfilePage = () => {
   };
 
   const handleCancel = () => {
-    setFormData(originalFormData); // Restore original form data
-    setEditMode(false); // Exit edit mode
-    window.location.reload(); // Reload the page
+    setFormData(originalFormData); 
+    setEditMode(false); 
+    window.location.reload(); 
   };
 
   console.log("original", originalFormData);
   const updateAddress = (addressId, updatedData) => {
-    // Update the address data in the local state or perform any other necessary actions
-    // For example:
+   
     setAddresses(
       addresses.map((address) => {
         if (address._id === addressId) {

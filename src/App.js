@@ -12,7 +12,11 @@ import CartPage from './pages/CartPage';
 import CatalogPage from './pages/CatalogPage';
 import LooksPage from './pages/LooksPage';
 import ErrorPage from './pages/ErrorPage';
-
+import AboutUs from './pages/AboutUs';
+import ShippingAndReturn from './pages/ShippingAndReturn';
+import TermsAndCondition from './pages/TermsAndCondition';
+import PaymentOptions from './pages/PaymentOptions';
+import RewardPoints from './pages/RewardPoints';
 const App = () => {
   return (
     <Router>
@@ -28,6 +32,11 @@ const App = () => {
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/catalog/looks/:catalogId" element={<LooksPage />} />
         <Route path="*" element={<ErrorPage />} />
+        <Route path="/aboutUs" element={<AboutUs/>}></Route>
+        <Route path="/TermsAndCondition" element={<TermsAndCondition/>}></Route>
+        <Route path="/ShippingAndReturns" element={<ShippingAndReturn/>}></Route>
+        <Route path="/PaymentOptions" element={<PaymentOptions/>}></Route>
+        <Route path="/RewardPoints" element={<RewardPoints/>}></Route>
       </Routes>
       <Footer />
     </Router>

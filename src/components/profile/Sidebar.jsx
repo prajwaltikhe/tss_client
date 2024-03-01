@@ -47,14 +47,24 @@ const Sidebar = () => {
           Orders
           <BsChevronRight />
         </ListGroup.Item>
-        <ListGroup.Item className="sidebar-item">
-          Payment Option
-          <BsChevronRight />
-        </ListGroup.Item>
-        <ListGroup.Item className="sidebar-item">
-          Reward Points
-          <BsChevronRight />
-        </ListGroup.Item>
+        <Link
+          to="/PaymentOptions"
+          className="sidebar-link text-decoration-none"
+        >
+          <ListGroup.Item className="sidebar-item">
+            Payment Options
+            <BsChevronRight />
+          </ListGroup.Item>
+        </Link>
+        <Link
+          to="/RewardPoints"
+          className="sidebar-link text-decoration-none"
+        >
+          <ListGroup.Item className="sidebar-item">
+            Reward Points
+            <BsChevronRight />
+          </ListGroup.Item>
+        </Link>
         <ListGroup.Item className="sidebar-item">
           Contact Us
           <BsChevronRight />
