@@ -17,8 +17,11 @@ const WishlistPage = () => {
         const response = await axios.get(
           `${tssurl}/liked/liked-products/${MID}`
         );
+        const filteredLikedProducts = response.data.likedProducts.filter(
+          (id) => id !== null
+        );
         const productDetails = await Promise.all(
-          response.data.likedProducts.map(async (productId) => {
+          filteredLikedProducts.map(async (productId) => {
             const productResponse = await axios.get(
               `${tssurl}/productDetails/${productId}`
             );
@@ -80,21 +83,22 @@ const WishlistPage = () => {
       const cartResponse = await axios.get(`${tssurl}/cart/carts/${MID}`);
       const cartProducts = cartResponse.data.cart.map((item) => item.pid);
 
-      // if (cartProducts.includes(productID)) {
-      //   // toast.error('Product already exists in the cart');
-      // } else {
+      if (cartProducts.includes(productID)) {
+        toast.success("Product added to cart");
+        handleDeleteProduct(productID);
+      } else {
         const response = await axios.post(`${tssurl}/cart/carts`, {
           mid: MID,
           pid: productID,
         });
-
+      
         if (response.status === 200) {
           toast.success('Product added to cart');
           handleDeleteProduct(productID);
           navigate('/cart/carts');
         } else {
           console.error('Failed to add product to cart');
-        // }
+        }
       }
     } catch (error) {
       console.error('Error :', error);

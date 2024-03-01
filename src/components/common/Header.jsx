@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { Navbar, Nav, Container, Image } from 'react-bootstrap';
-import { NavDropdown, Tabs, Tab } from 'react-bootstrap';
-import { FaShoppingCart, FaStar, FaSearch, FaUser } from 'react-icons/fa';
-import axios from 'axios';
-import tssurl from '../../port';
-import Login from '../auth/Login';
-import { toast } from 'react-toastify';
+import { useState, useEffect } from "react";
+import { Navbar, Nav, Container, Image } from "react-bootstrap";
+import { NavDropdown, Tabs, Tab } from "react-bootstrap";
+import { FaShoppingCart, FaStar, FaSearch, FaUser } from "react-icons/fa";
+import axios from "axios";
+import tssurl from "../../port";
+import Login from "../auth/Login";
+import { toast } from "react-toastify";
 
 const Header = () => {
-  const [logo, setLogo] = useState('');
+  const [logo, setLogo] = useState("");
   const [head, setHead] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [show, setShow] = useState(false);
@@ -16,7 +16,7 @@ const Header = () => {
   const handleShow = () => setShow(true);
 
   const isUserLoggedIn = () => {
-    const authToken = localStorage.getItem('authToken');
+    const authToken = localStorage.getItem("authToken");
     return !!authToken;
   };
 
@@ -30,7 +30,7 @@ const Header = () => {
       setLogo(data.header.brand_logo.url);
       setHead(JSON.parse(data.header.header));
     } catch (error) {
-      console.error('Err:', error);
+      console.error("Err:", error);
     }
   };
 
@@ -39,15 +39,18 @@ const Header = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("MID");
     setIsLoggedIn(false);
-    toast.success('Sign Out Successful');
+    toast.success("Sign Out Successful");
   };
 
   const activeKey = () => {
-    const mainMenu = head?.find((menu) => menu?.Mname === 'WOMEN');
-    return mainMenu ? mainMenu.MLink : '';
+    const mainMenu = head?.find((menu) => menu?.Mname === "WOMEN");
+    return mainMenu ? mainMenu.MLink : "";
   };
+  console.log(head, "head");
 
   return (
     <header>
@@ -98,8 +101,8 @@ const Header = () => {
                   {menu?.nav_link?.map((item, index) => (
                     <Nav.Link
                       key={`${item?.link}-${index}`}
-                      href="/products"
-                      style={{ fontSize: '1.1rem' }}
+                      // href={`/products/${item.link}`}
+                      style={{ fontSize: "1.1rem" }}
                     >
                       {item.name}
                     </Nav.Link>
