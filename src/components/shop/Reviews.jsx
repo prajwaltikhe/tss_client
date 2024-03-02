@@ -25,6 +25,8 @@ const Reviews = ({ productID }) => {
   const [reviewsPerPage] = useState(4);
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -62,6 +64,7 @@ const Reviews = ({ productID }) => {
         product_name: reviewTitle,
         rating: rating,
         review: reviewDesc,
+        images: images,
         // recommendProduct: recommendProduct,
         // rid:review23,
         // username: john_doe,
@@ -75,17 +78,56 @@ const Reviews = ({ productID }) => {
       };
 
       const response = await axios.post(`${tssurl}/review/reviews`, reviewData);
-      console.log('Review added successfully:', response.data);
-
-      setReviewTitle('');
-      setReviewDesc('');
-      setRating(0);
-      setRecommendProduct(false);
+      console.log("Review added successfully:", response.data);
+      resetFormData();
 
       setShowModal(false);
     } catch (error) {
       console.error('Error adding review:', error);
     }
+  };
+
+  const resetFormData = () => {
+    setReviewTitle("");
+    setReviewDesc("");
+    setRating(0);
+    setRecommendProduct(false);
+    setImages([]);
+    setImagePreviews([]);
+  };
+
+  const handleImageChange = (event) => {
+    const selectedImages = Array.from(event.target.files);
+    const newImages = [...images, ...selectedImages].slice(0, 4); // Concatenate new images with existing ones and limit to 4
+    setImages(newImages);
+
+    const previews = newImages.map((image) => URL.createObjectURL(image));
+    setImagePreviews(previews);
+  };
+
+  const handleCloseModal = () => {
+    resetFormData();
+    setShowModal(false);
+  };
+
+  const renderImagePreviews = () => {
+    return (
+      <Row className="mb-3">
+        {imagePreviews.map((preview, index) => (
+          <Col key={index} md={3} sm={4} className="d-flex align-items-center">
+            <img
+              src={preview}
+              alt={`Preview ${index}`}
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+                objectFit: "contain",
+              }}
+            />
+          </Col>
+        ))}
+      </Row>
+    );
   };
 
   const renderReviews = () => {
@@ -159,7 +201,7 @@ const Reviews = ({ productID }) => {
           Add Review
         </Button>
 
-        <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
             <Modal.Title>Add Review</Modal.Title>
           </Modal.Header>
@@ -200,10 +242,21 @@ const Reviews = ({ productID }) => {
                   onChange={(e) => setRecommendProduct(e.target.checked)}
                 />
               </Form.Group>
+              <Form.Group controlId="image">
+                <Form.Label>Upload Images (Up to 4)</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageChange}
+                />
+
+                <div>{renderImagePreviews()}</div>
+              </Form.Group>
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowModal(false)}>
+            <Button variant="secondary" onClick={handleCloseModal}>
               Close
             </Button>
             <Button variant="primary" onClick={handleAddReview}>
@@ -265,11 +318,6 @@ const Reviews = ({ productID }) => {
             Next {'>'}
           </button>
         </div>
-        {/* <div className="d-flex ">
-          <p>1 of 15</p>
-          <p>Sort</p>
-          <Button>Recent</Button>
-        </div> */}
       </div>
 
       {renderReviews()}

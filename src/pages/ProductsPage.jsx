@@ -15,7 +15,8 @@ const ProductsPage = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(`${tssurl}/productcat/products`);
-      setProducts(response.data);
+      const filteredData = response?.data?.filter(item => item.draft === "false");
+    setProducts(filteredData);
     } catch (error) {
       console.error('Error fetching data:', error);
     }

@@ -1,16 +1,16 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Card, Badge } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FaCircle, FaRegHeart, FaHeart } from 'react-icons/fa';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import tssurl from '../../port';
+import { useState, useEffect, useCallback } from "react";
+import { Card, Badge, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { FaCircle, FaRegHeart, FaHeart } from "react-icons/fa";
+import { toast } from "react-toastify";
+import axios from "axios";
+import tssurl from "../../port";
 
 const Product = ({ product }) => {
   const [likedProducts, setLikedProducts] = useState([]);
   const thumbImgUrl = product.variants?.[0]?.ThumbImg?.[0];
   const colors = product.colors;
-  const MID = localStorage.getItem('MID');
+  const MID = localStorage.getItem("MID");
 
   useEffect(() => {
     const fetchLikedProducts = async () => {
@@ -20,7 +20,7 @@ const Product = ({ product }) => {
         );
         setLikedProducts(response.data.likedProducts);
       } catch (error) {
-        console.error('Error fetching liked products:', error);
+        console.error("Error fetching liked products:", error);
       }
     };
 
@@ -31,21 +31,21 @@ const Product = ({ product }) => {
     try {
       if (likedProducts.includes(product.pid)) {
         setLikedProducts(likedProducts.filter((pid) => pid !== product.pid));
-        console.log('Liked Products:', likedProducts);
+        console.log("Liked Products:", likedProducts);
         await axios.delete(`${tssurl}/liked/liked-products/delete`, {
           data: { mid: MID, pid: product.pid },
         });
-        toast.success('Removed from Wishlist');
+        toast.success("Removed from Wishlist");
       } else {
         setLikedProducts([...likedProducts, product.pid]);
         await axios.post(`${tssurl}/liked/liked-products/add`, {
           mid: MID,
           pid: product.pid,
         });
-        toast.success('Added to Wishlist');
+        toast.success("Added to Wishlist");
       }
     } catch (error) {
-      console.error('Error toggling like:', error);
+      console.error("Error toggling like:", error);
     }
   }, [likedProducts, product.pid, MID]);
 
@@ -57,7 +57,7 @@ const Product = ({ product }) => {
             className="heart"
             size="20px"
             onClick={toggleLike}
-            style={{ color: 'red' }}
+            style={{ color: "red" }}
           />
         ) : (
           <FaRegHeart className="heart" size="20px" onClick={toggleLike} />
@@ -65,7 +65,7 @@ const Product = ({ product }) => {
 
         <Link to={`/productDetails/${product.pid}`}>
           <Card.Img src={thumbImgUrl} variant="top" fluid="true" />
-          {product.rating > '4.5' && <Badge bg="light">TOP RATED</Badge>}
+          {product.rating > "4.5" && <Badge bg="light">TOP RATED</Badge>}
         </Link>
       </div>
 
@@ -82,7 +82,17 @@ const Product = ({ product }) => {
 
         <Card.Text as="div">
           {colors.map((color) => (
-            <FaCircle key={color.name} size="20px" color={color.value} />
+            <OverlayTrigger
+              key={color.name}
+              placement="bottom"
+              overlay={
+                <Tooltip id={`tooltip-${color.name}`}>{color.name}</Tooltip>
+              }
+            >
+              <span>
+                <FaCircle size="20px" className="mx-1" color={color.value} />
+              </span>
+            </OverlayTrigger>
           ))}
         </Card.Text>
       </Card.Body>

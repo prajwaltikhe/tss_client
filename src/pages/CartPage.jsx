@@ -3,6 +3,7 @@ import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import CartCard from '../components/cart/CartCard';
 import axios from 'axios';
 import tssurl from '../port';
+import { toast } from 'react-toastify';
 
 const CartPage = () => {
   const mid = localStorage.getItem('MID');
@@ -32,6 +33,7 @@ const CartPage = () => {
       });
 
       await fetchCartData();
+      toast.success("Item removed from cart")
       updateBagTotal();
     } catch (error) {
       console.error('Error deleting cart item:', error);

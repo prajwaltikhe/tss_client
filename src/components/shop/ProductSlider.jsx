@@ -74,6 +74,7 @@ const ProductsSlider = ({ data }) => {
     },
   };
 
+  
   const toggleLike = async (productId) => {
     try {
       const productIdString = String(productId);
@@ -105,7 +106,7 @@ const ProductsSlider = ({ data }) => {
           {data.map((item, index) => (
             <Col key={index} className="mb-4">
               <Card>
-                <Link to={`/productDetails/${data.pid}`}>
+                <Link to={`/productDetails/${item.pid}`}>
                   <Image
                     src={item?.variants?.[0]?.ThumbImg}
                     alt={item?.sub_category}
